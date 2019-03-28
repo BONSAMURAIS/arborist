@@ -41,6 +41,7 @@ setup(
     install_requires=[
         'docopt',
         'pandas',
+        'rdflib',
     ],
     url="https://github.com/BONSAMURAIS/arborist",
     long_description=open('README.md').read(),
