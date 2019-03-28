@@ -18,7 +18,7 @@ def generate_exiobase_us_epa_uris(output_base_dir):
     
     output_dir = create_dir(output_base_dir / "flowobject" / "exiobase3_3_17")
     
-    with open(output_dir / "exiobase3_3_17_us_epa.ttl", "w") as f:
+    with open(output_dir / "exiobase3_3_17.ttl", "w") as f:
     
         f.write('@prefix bont: <http://ontology.bonsai.uno/core#> .\n')
         f.write('@prefix dc: <http://purl.org/dc/terms/> .\n')
