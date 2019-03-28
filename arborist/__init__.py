@@ -1,6 +1,7 @@
 __all__ = (
     "generate_time_uris",
     "generate_climate_change_uris",
+    "generate_us_epa_uris"
 )
 __version__ = (0, 1)
 
