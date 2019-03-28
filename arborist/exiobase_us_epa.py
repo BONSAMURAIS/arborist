@@ -9,8 +9,7 @@ import pandas
 
 DOCKER = """Run the following to convert to JSON-LD:
     cd {}
-    docker run -it --rm -v `pwd`:/rdf stain/jena riot -out JSON-LD flowobject/lcia/climatechange/climatechange.ttl > flowobject/lcia/climatechange/climatechange.jsonld
-    docker run -it --rm -v `pwd`:/rdf stain/jena riot -out JSON-LD activitytype/lcia/climatechange/climatechange.ttl > activitytype/lcia/climatechange/climatechange.jsonld
+    docker run -it --rm -v `pwd`:/rdf stain/jena riot -out JSON-LD flowobject/exiobase3_3_17/exiobase3_3_17.ttl > flowobject/exiobase3_3_17/exiobase3_3_17.jsonld
 """
 
 def generate_exiobase_us_epa_uris(output_base_dir):
