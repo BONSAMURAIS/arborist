@@ -38,8 +38,8 @@ def generate_exiobase_us_epa_uris(output_base_dir):
         
         f.write('<http://rdf.bonsai.uno/flowobject/us_epa/>\n')
         f.write('  a dtype:Dataset ;\n')
-        f.write('  dc:title "The US EPA Chemicals as Flow Objects"@en ;\n')
-        f.write('  dc:description "US EPA elementary flows used by BONSAI ontologies and correspondence with ChemSpider"@en ;\n')
+        f.write('  dc:title "The correspondence between EXIOBASE emissions with US EPA Chemicals as Flow Objects"@en ;\n')
+        f.write('  dc:description "The correspondence between EXIOBASE emissions with US EPA Chemicals as Flow Objects"@en ;\n')
         f.write('  foaf:homepage <http://rdf.bonsai.uno/flowobject/us_epa//documentation.html> ;\n')
         f.write('  ns0:preferredNamespaceUri "http://rdf.bonsai.uno/flowobject/us_epa/#" ;\n')
         f.write('  owl:versionInfo "Version 0.1 - 2019-03-25"@en ;\n')
