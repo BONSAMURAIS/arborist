@@ -9,9 +9,8 @@ import pandas
 
 DOCKER = """Run the following to convert to JSON-LD:
     cd {}
-    docker run -it --rm -v `pwd`:/rdf stain/jena riot -out JSON-LD flowobject/lcia/climatechange/climatechange.ttl > flowobject/lcia/climatechange/climatechange.jsonld
-    docker run -it --rm -v `pwd`:/rdf stain/jena riot -out JSON-LD activitytype/lcia/climatechange/climatechange.ttl > activitytype/lcia/climatechange/climatechange.jsonld
-"""
+    docker run -it --rm -v `pwd`:/rdf stain/jena riot -out JSON-LD flowobject/flowobject/us_epa/us_epa.ttl > flowobject/flowobject/us_epa/us_epa.jsonld
+    """
 
 def generate_us_epa_uris(output_base_dir):
     data = pandas.read_csv(data_dir / 'USEPA_URI.csv')
@@ -20,6 +19,7 @@ def generate_us_epa_uris(output_base_dir):
     output_dir = create_dir(output_base_dir / "objectflow" / "us_epa")
     
     with open(output_dir / "USEPA_URI.ttl", "w") as f:
+        
         
         f.write('@prefix bont: <http://ontology.bonsai.uno/core#> .\n')
         f.write('@prefix dc: <http://purl.org/dc/terms/> .\n')
