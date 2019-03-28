@@ -13,7 +13,6 @@ DOCKER = """Run the following to convert to JSON-LD:
 """
 
 def generate_electricity_mix_uris(output_base_dir):
-    data = pandas.read_csv(data_dir / 'exiobase_to_usepa_ghg.csv')
     output_base_dir = Path(output_base_dir)
     
     output_dir = create_dir(output_base_dir / "flowobject" / "exiobase3_3_17")
