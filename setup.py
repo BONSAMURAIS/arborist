@@ -42,6 +42,7 @@ setup(
         'docopt',
         'pandas',
         'rdflib',
+        'xlrd',
     ],
     url="https://github.com/BONSAMURAIS/arborist",
     long_description=open('README.md').read(),

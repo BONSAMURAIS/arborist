@@ -14,7 +14,6 @@ DOCKER = """Run the following to convert to JSON-LD:
     docker run -it --rm -v `pwd`:/rdf stain/jena riot -out JSON-LD activitytype/lcia/climatechange/climatechange.ttl > activitytype/lcia/climatechange/climatechange.jsonld
 """
 
-
 def generate_climate_change_uris(output_base_dir):
     data = pandas.read_csv(data_dir / 'climate_change.csv')
     output_base_dir = Path(output_base_dir)
