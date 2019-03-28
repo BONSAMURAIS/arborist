@@ -21,7 +21,6 @@ def generate_us_epa_uris(output_base_dir):
     
     with open(output_dir / "USEPA_URI.ttl", "w") as f:
         
-        
         f.write('@prefix bont: <http://ontology.bonsai.uno/core#> .\n')
         f.write('@prefix dc: <http://purl.org/dc/terms/> .\n')
         f.write('@prefix ns0: <http://purl.org/vocab/vann/> .\n')
