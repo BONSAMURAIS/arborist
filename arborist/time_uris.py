@@ -43,6 +43,7 @@ def generate_time_uris(output_base_dir):
 
         node = URIRef("brdftime:{}".format(year))
         g.add( (node, RDF.type, owltime.ProperInterval) )
+        g.add( (node, RDFS.label, Literal(year)) )
         g.add( (node, owltime.hasBeginning, begin))
         g.add( (node, owltime.hasEnd, end))
         g.add( (node, owltime.hasDurationDescription, oneyear))
