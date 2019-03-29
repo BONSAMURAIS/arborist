@@ -12,7 +12,7 @@ Options:
 
 """
 from docopt import docopt
-from your_name_here import some_wrapper_function
+from arborist import *
 import sys
 
 

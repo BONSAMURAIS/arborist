@@ -31,8 +31,7 @@ setup(
     author="BONSAI team",
     author_email="info@bonsai.uno",
     license=open('LICENSE').read(),
-    # Only if you have non-python data (CSV, etc.). Might need to change the directory name as well.
-    # package_data={'your_name_here': package_files(os.path.join('arborist', 'data'))},
+    package_data={'arborist': package_files(os.path.join('arborist', 'data'))},
     entry_points = {
         'console_scripts': [
             'arborist-cli = arborist.bin.rename_me_cli:main',
