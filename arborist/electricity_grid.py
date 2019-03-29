@@ -22,6 +22,7 @@ def generate_electricity_grid_uris(output_base_dir):
 
     node = URIRef("http://rdf.bonsai.uno/activitytype/core/eg")
     g.add( (node, RDF.type, nb.ActivityType) )
+    g.add( (node, RDFS.label, Literal("Electricity grid")) )
     g.add( (node, DC.title, Literal("Electricity grid")) )
     g.add( (node, DC.description, Literal("Electricity grid activity type")) )
     g.add( (node, DC.publisher, Literal("bonsai.uno")) )
