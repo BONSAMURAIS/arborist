@@ -30,6 +30,26 @@ def generate_electricity_grid_uris(output_base_dir):
     g.add( (node, DC.contributor, Literal("Tiago Morais")) )
     g.add( (node, URIRef("http://creativecommons.org/ns#license"), URIRef('http://creativecommons.org/licenses/by/3.0/')) )
 
+    node = URIRef("http://rdf.bonsai.uno/activitytype/core/elec")
+    g.add( (node, RDF.type, nb.FlowObject) )
+    g.add( (node, RDFS.label, Literal("Electricity from the grid")) )
+    g.add( (node, DC.title, Literal("Electricity from the grid")) )
+    g.add( (node, DC.description, Literal("Electricity from the grid flow object")) )
+    g.add( (node, DC.publisher, Literal("bonsai.uno")) )
+    g.add( (node, DC.creator, URIRef("http://bonsai.uno/foaf/bonsai.rdf#bonsai")) )
+    g.add( (node, DC.contributor, Literal("Arthur Jakobs")) )
+    g.add( (node, URIRef("http://creativecommons.org/ns#license"), URIRef('http://creativecommons.org/licenses/by/3.0/')) )
+
+    node = URIRef("http://rdf.bonsai.uno/activitytype/core/em")
+    g.add( (node, RDF.type, nb.ActivityType) )
+    g.add( (node, RDFS.label, Literal("Market for electricity")) )
+    g.add( (node, DC.title, Literal("Market for electricity")) )
+    g.add( (node, DC.description, Literal("Electricity grid (market) activity type")) )
+    g.add( (node, DC.publisher, Literal("bonsai.uno")) )
+    g.add( (node, DC.creator, URIRef("http://bonsai.uno/foaf/bonsai.rdf#bonsai")) )
+    g.add( (node, DC.contributor, Literal("Arthur Jakobs")) )
+    g.add( (node, URIRef("http://creativecommons.org/ns#license"), URIRef('http://creativecommons.org/licenses/by/3.0/')) )
+
     create_dir(output_base_dir / "activitytype" / "core" / "electricity_grid")
     with open(
             output_base_dir / "activitytype" / "core" / "electricity_grid" / "electricity_grid.ttl",
