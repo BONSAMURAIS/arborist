@@ -43,9 +43,9 @@ def generate_us_epa_uris(output_base_dir):
         g.add( (node, URIRef("http://creativecommons.org/ns#license"), URIRef('http://creativecommons.org/licenses/by/3.0/')) )
     
     
-    create_dir(output_base_dir / "objectflow" / "us_epa") 
+    create_dir(output_base_dir / "flowobject" / "us_epa") 
     with open(
-            output_base_dir / "objectflow" / "us_epa" / "us_epa.ttl",
+            output_base_dir / "flowobject" / "us_epa" / "us_epa.ttl",
             "wb") as f:
         g.serialize(f, format="turtle", encoding='utf-8')
         
