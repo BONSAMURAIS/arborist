@@ -3,55 +3,59 @@ Handcrafted as not available elsewhere."""
 
 from . import data_dir
 from .filesystem import create_dir
+from .graph_common import NS, add_common_elements
 from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
-from rdflib.namespace import DC, RDFS
+from rdflib.namespace import RDFS
 import pandas
 
 
 def generate_electricity_grid_uris(output_base_dir):
     output_base_dir = Path(output_base_dir)
 
-    nat = Namespace("http://rdf.bonsai.uno/activitytype/core/")
-    nb = Namespace("http://ontology.bonsai.uno/core#")
+    g = add_common_elements(
+        graph=Graph(),
+        base_uri="http://rdf.bonsai.uno/activitytype/core/electricity_grid/",
+        title="Electricity grid activity types for BONSAI",
+        description='ActivityType instances needed for BONSAI electricity grid modelling',
+        author="Arthur Jakobs",
+        version="0.2",
+    )
 
-    g = Graph()
-    g.bind('bont', 'http://ontology.bonsai.uno/core#')
     g.bind('brdfat', 'http://rdf.bonsai.uno/activitytype/core/electricity_grid/')
-    g.bind("dc", DC)
 
     node = URIRef("http://rdf.bonsai.uno/activitytype/core/eg")
-    g.add( (node, RDF.type, nb.ActivityType) )
+    g.add( (node, RDF.type, NS.nb.ActivityType) )
     g.add( (node, RDFS.label, Literal("Electricity grid")) )
-    g.add( (node, DC.title, Literal("Electricity grid")) )
-    g.add( (node, DC.description, Literal("Electricity grid activity type")) )
-    g.add( (node, DC.publisher, Literal("bonsai.uno")) )
-    g.add( (node, DC.creator, URIRef("http://bonsai.uno/foaf/bonsai.rdf#bonsai")) )
-    g.add( (node, DC.contributor, Literal("Tiago Morais")) )
-    g.add( (node, URIRef("http://creativecommons.org/ns#license"), URIRef('http://creativecommons.org/licenses/by/3.0/')) )
-
-    node = URIRef("http://rdf.bonsai.uno/activitytype/core/elec")
-    g.add( (node, RDF.type, nb.FlowObject) )
-    g.add( (node, RDFS.label, Literal("Electricity from the grid")) )
-    g.add( (node, DC.title, Literal("Electricity from the grid")) )
-    g.add( (node, DC.description, Literal("Electricity from the grid flow object")) )
-    g.add( (node, DC.publisher, Literal("bonsai.uno")) )
-    g.add( (node, DC.creator, URIRef("http://bonsai.uno/foaf/bonsai.rdf#bonsai")) )
-    g.add( (node, DC.contributor, Literal("Arthur Jakobs")) )
-    g.add( (node, URIRef("http://creativecommons.org/ns#license"), URIRef('http://creativecommons.org/licenses/by/3.0/')) )
 
     node = URIRef("http://rdf.bonsai.uno/activitytype/core/em")
-    g.add( (node, RDF.type, nb.ActivityType) )
+    g.add( (node, RDF.type, NS.nb.ActivityType) )
     g.add( (node, RDFS.label, Literal("Market for electricity")) )
-    g.add( (node, DC.title, Literal("Market for electricity")) )
-    g.add( (node, DC.description, Literal("Electricity grid (market) activity type")) )
-    g.add( (node, DC.publisher, Literal("bonsai.uno")) )
-    g.add( (node, DC.creator, URIRef("http://bonsai.uno/foaf/bonsai.rdf#bonsai")) )
-    g.add( (node, DC.contributor, Literal("Arthur Jakobs")) )
-    g.add( (node, URIRef("http://creativecommons.org/ns#license"), URIRef('http://creativecommons.org/licenses/by/3.0/')) )
 
     create_dir(output_base_dir / "activitytype" / "core" / "electricity_grid")
     with open(
             output_base_dir / "activitytype" / "core" / "electricity_grid" / "electricity_grid.ttl",
             "wb") as f:
         g.serialize(f, format="turtle", encoding='utf-8')
+
+    g = add_common_elements(
+        graph=Graph(),
+        base_uri="http://rdf.bonsai.uno/flowobject/core/electricity_grid/",
+        title="Electricity grid flow objects for BONSAI",
+        description='FlowObject instances needed for BONSAI electricity grid modelling',
+        author="Arthur Jakobs",
+        version="0.2",
+    )
+
+    g.bind('brdfat', 'http://rdf.bonsai.uno/activitytype/core/electricity_grid/')
+
+    node = URIRef("http://rdf.bonsai.uno/flowobject/core/elec")
+    g.add( (node, RDF.type, NS.nb.FlowObject) )
+    g.add( (node, RDFS.label, Literal("Electricity from the grid")) )
+
+    create_dir(output_base_dir / "flowobject" / "core" / "electricity_grid")
+    with open(
+            output_base_dir / "flowobject" / "core" / "electricity_grid" / "electricity_grid.ttl",
+            "wb") as f:
+        g.serialize(f, format="turtle", encoding='utf-8')
+
