@@ -1,98 +1,63 @@
-"""Time URIs used for now. Hard coded because no external data to consume."""
-import json
-from pathlib import Path
 from .filesystem import create_dir
-
-
-DOCKER = """
-Please run the following to convert JSON-LD to TTL:
-
-    cd "{}"
-    docker run -it --rm -v `pwd`:/rdf stain/jena riot -out Turtle time/time.jsonld > time/time.ttl
-"""
-
-
-class ProperInterval:
-    def __init__(self, years):
-        """``years`` is a list of integer years."""
-        self.years = years
-        self.filename = "time"
-
-    def map_wikidata_year(self, year):
-        MAPPING = {
-            2011: "https://www.wikidata.org/wiki/Q1994",
-            2015: "https://www.wikidata.org/wiki/Q2002",
-            2016: "https://www.wikidata.org/wiki/Q25245",
-            2017: "https://www.wikidata.org/wiki/Q25290",
-            2018: "https://www.wikidata.org/wiki/Q25291",
-        }
-        return MAPPING[year]
-
-    def get_data(self):
-        data = {
-            "@context" : {
-                "years" : {
-                    "@id" : "https://www.w3.org/TR/owl-time/years",
-                    "@type" : "http://www.w3.org/2001/XMLSchema#integer"
-                },
-                "sameAs" : {
-                    "@id" : "http://www.w3.org/2002/07/owl#sameAs",
-                    "@type" : "@id"
-                },
-                "hasEnd" : {
-                    "@id" : "https://www.w3.org/TR/owl-time/hasEnd",
-                    "@type" : "@id"
-                },
-                "hasDurationDescription" : {
-                    "@id" : "https://www.w3.org/TR/owl-time/hasDurationDescription",
-                "@type" : "@id"
-                },
-                "hasBeginning" : {
-                    "@id" : "https://www.w3.org/TR/owl-time/hasBeginning",
-                    "@type" : "@id"
-                },
-                "inXSDDate" : {
-                    "@id" : "https://www.w3.org/TR/owl-time/inXSDDate",
-                    "@type" : "http://www.w3.org/2001/XMLSchema#date"
-                },
-                "brdftim" : "http://rdf.bonsai.uno/time/",
-                "time" : "https://www.w3.org/TR/owl-time/",
-                },
-            "@graph": [{
-                "@id" : "brdftim:oneyearlong",
-                "@type" : "time:DurationDescription",
-                "time:years" : 1
-            }]
-        }
-        for year in self.years:
-            data['@graph'].extend([{
-                "@id": "brdftim:{}end".format(year),
-                "@type": "time:Instant",
-                "inXSDDate": "{}-12-31".format(year),
-            }, {
-                "@id": "brdftim:{}start".format(year),
-                "@type": "time:Instant",
-                "inXSDDate": "{}-01-01".format(year),
-            }, {
-                "@id": "brdftim:{}".format(year),
-                "@type": "time:ProperInterval",
-                "sameAs": [
-                    self.map_wikidata_year(year),
-                    "http://reference.data.gov.uk/doc/year/{}".format(year)
-                ],
-                "hasBeginning": "brdftim:{}start".format(year),
-                "hasDurationDescription": "brdftim:oneyearlong",
-                "hasEnd": "brdftim:{}end".format(year),
-            }])
-        return data
-
-    def write_file(self, output_dir):
-        create_dir(output_dir / "time")
-        with open(output_dir / "time" / (self.filename + ".jsonld"), "w", encoding='utf-8') as f:
-            json.dump(self.get_data(), f, ensure_ascii=False, indent=2)
+from pathlib import Path
+from rdflib import Graph, Literal, RDF, URIRef, Namespace
+from rdflib.namespace import DC, RDFS, OWL, XSD
 
 
 def generate_time_uris(output_base_dir):
-    time = ProperInterval([2011, 2016, 2017, 2018])
-    time.write_file(Path(output_base_dir))
-    print(DOCKER.format(output_base_dir))
+    """Time URIs used for now. Hard coded because no external data to consume."""
+    output_base_dir = Path(output_base_dir)
+
+    WIKIDATA_MAPPING = {
+        2011: "https://www.wikidata.org/wiki/Q1994",
+        2015: "https://www.wikidata.org/wiki/Q2002",
+        2016: "https://www.wikidata.org/wiki/Q25245",
+        2017: "https://www.wikidata.org/wiki/Q25290",
+        2018: "https://www.wikidata.org/wiki/Q25291",
+    }
+
+    nb = Namespace("http://ontology.bonsai.uno/core#")
+    owltime = Namespace("https://www.w3.org/TR/owl-time/")
+    nbt = Namespace("http://rdf.bonsai.uno/time/")
+
+    g = Graph()
+    g.bind('bont', 'http://ontology.bonsai.uno/core#')
+    g.bind('brdftime', 'http://rdf.bonsai.uno/time/')
+    g.bind("dc", DC)
+    g.bind("owl", OWL)
+    g.bind("xsd", XSD)
+    g.bind("ot", "https://www.w3.org/TR/owl-time/")
+
+    oneyear = URIRef("brdftime:oneyearlong")
+    g.add( (oneyear, RDF.type, owltime.DurationDescription) )
+    g.add( (oneyear, owltime.years, Literal("1", datatype=XSD.integer)) )
+
+    for year, wd in WIKIDATA_MAPPING.items():
+        end = URIRef("brdftime:{}end".format(year))
+        g.add( (end, RDF.type, owltime.Instant) )
+        g.add( (end, owltime.inXSDDate, Literal("{}-12-31".format(year), datatype=XSD.date)))
+
+        begin = URIRef("brdftime:{}start".format(year))
+        g.add( (begin, RDF.type, owltime.Instant) )
+        g.add( (begin, owltime.inXSDDate, Literal("{}-01-01".format(year), datatype=XSD.date)))
+
+        node = URIRef("brdftime:{}".format(year))
+        g.add( (node, RDF.type, owltime.ProperInterval) )
+        g.add( (node, owltime.hasBeginning, begin))
+        g.add( (node, owltime.hasEnd, end))
+        g.add( (node, owltime.hasDurationDescription, oneyear))
+        g.add( (node, owltime.inXSDDate, Literal("{}-01-01".format(year), datatype=XSD.date)))
+        g.add( (node, OWL.sameAs, URIRef(wd)))
+        g.add( (node, OWL.sameAs, URIRef("http://reference.data.gov.uk/doc/year/{}".format(year))))
+        g.add( (node, DC.title, Literal("Year {}".format(year))) )
+        g.add( (node, DC.description, Literal("The complete year {}".format(year))) )
+        g.add( (node, DC.publisher, Literal("bonsai.uno")) )
+        g.add( (node, DC.creator, URIRef("http://bonsai.uno/foaf/bonsai.rdf#bonsai")) )
+        g.add( (node, DC.contributor, Literal("Chris Mutel")) )
+        g.add( (node, URIRef("http://creativecommons.org/ns#license"), URIRef('http://creativecommons.org/licenses/by/3.0/')) )
+
+    create_dir(output_base_dir / "time")
+    with open(
+            output_base_dir / "time" / "time.ttl",
+            "wb") as f:
+        g.serialize(f, format="turtle", encoding='utf-8')
