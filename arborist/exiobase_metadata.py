@@ -1,5 +1,6 @@
 from . import data_dir
 from .filesystem import create_dir
+from .graph_common import NS, add_common_elements
 from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
 from rdflib.namespace import DC, RDFS
@@ -17,13 +18,16 @@ def generate_exiobase_metadata_uris(output_base_dir):
     data = set(zip(df['Activity name'], df['Activity code 2']))
 
     nat = Namespace("http://rdf.bonsai.uno/activitytype/exiobase3_3_17/")
-    nb = Namespace("http://ontology.bonsai.uno/core#")
-    nfo = Namespace("http://rdf.bonsai.uno/flowobject/exiobase3_3_17/")
 
-    g = Graph()
-    g.bind('bont', 'http://ontology.bonsai.uno/core#')
+    g = add_common_elements(
+        graph=Graph(),
+        base_uri="http://rdf.bonsai.uno/activitytype/exiobase3_3_17/",
+        title="EXIOBASE 3.3.17 activity types",
+        description='ActivityType instances needed for BONSAI modelling of EXIOBASE version 3.3.17',
+        author="BONSAI team",
+        version="0.2",
+    )
     g.bind('brdfat', 'http://rdf.bonsai.uno/activitytype/exiobase3_3_17/')
-    g.bind("dc", DC)
 
     for name, code in data:
         node = URIRef(nat[code])
@@ -45,10 +49,17 @@ def generate_exiobase_metadata_uris(output_base_dir):
     )
     data = set(zip(df['Product name'], df['product code 2']))
 
-    g = Graph()
-    g.bind('bont', 'http://ontology.bonsai.uno/core#')
+    nfo = Namespace("http://rdf.bonsai.uno/flowobject/exiobase3_3_17/")
+
+    g = add_common_elements(
+        graph=Graph(),
+        base_uri="http://rdf.bonsai.uno/flowobject/exiobase3_3_17/",
+        title="EXIOBASE 3.3.17 flow objects",
+        description='FlowObject instances needed for BONSAI modelling of EXIOBASE version 3.3.17',
+        author="BONSAI team",
+        version="0.2",
+    )
     g.bind('brdffo', "http://rdf.bonsai.uno/flowobject/exiobase3_3_17/")
-    g.bind("dc", DC)
 
     for name, code in data:
         node = URIRef(nfo[code])
