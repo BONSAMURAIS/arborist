@@ -1,7 +1,7 @@
 from .filesystem import create_dir
 from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
-from rdflib.namespace import DC, RDFS, FOAF, SKOS
+from rdflib.namespace import RDFS, FOAF, SKOS
 
 
 def generate_foaf_uris(output_base_dir):
@@ -17,12 +17,12 @@ def generate_foaf_uris(output_base_dir):
     g.bind('foaf', FOAF)
 
     node = URIRef("http://bonsai.uno/foaf/foaf.ttl#bonsai")
-    g.add( (node, RDF.type, org.Organization) )
-    g.add( (node, SKOS.prefLabel, Literal("BONSAI – Big Open Network for Sustainability Assessment Information")) )
-    g.add( (node, FOAF.homepage, URIRef("http://bonsai.uno")) )
-    g.add( (node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q131201")) )
-    g.add( (node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q2323664")) )
-    g.add( (node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q18692990")) )
+    g.add((node, RDF.type, org.Organization))
+    g.add((node, SKOS.prefLabel, Literal("BONSAI – Big Open Network for Sustainability Assessment Information")))
+    g.add((node, FOAF.homepage, URIRef("http://bonsai.uno")))
+    g.add((node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q131201")))
+    g.add((node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q2323664")))
+    g.add((node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q18692990")))
 
     create_dir(output_base_dir / "foaf")
     with open(

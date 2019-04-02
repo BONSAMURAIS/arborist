@@ -1,4 +1,4 @@
-from .filesystem import create_dir, write_graph
+from .filesystem import write_graph
 from pathlib import Path
 from rdflib import Literal, RDF, URIRef, Namespace, Graph
 from rdflib.namespace import DC, RDFS, OWL, FOAF, XSD, SKOS
@@ -11,6 +11,7 @@ class CommonNamespaces:
         self.owltime = Namespace("https://www.w3.org/TR/owl-time/")
         self.vann = Namespace("http://purl.org/vocab/vann/")
         self.dt = Namespace("http://purl.org/dc/dcmitype/")
+
 
 NS = CommonNamespaces()
 
@@ -40,19 +41,19 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     graph.bind("dtype", "http://purl.org/dc/dcmitype/")
 
     node = URIRef(base_uri)
-    graph.add( (node, RDF.type, NS.dt.Dataset) )
-    graph.add( (node, DC.title, Literal(title)) )
-    graph.add( (node, DC.description, Literal(description)) )
-    graph.add( (node, FOAF.homepage, URIRef(base_uri + "documentation.html")) )
-    graph.add( (node, NS.vann.preferredNamespaceUri, URIRef(base_uri + "#")) )
-    graph.add( (node, OWL.versionInfo, Literal(version)) )
+    graph.add((node, RDF.type, NS.dt.Dataset))
+    graph.add((node, DC.title, Literal(title)))
+    graph.add((node, DC.description, Literal(description)))
+    graph.add((node, FOAF.homepage, URIRef(base_uri + "documentation.html")))
+    graph.add((node, NS.vann.preferredNamespaceUri, URIRef(base_uri + "#")))
+    graph.add((node, OWL.versionInfo, Literal(version)))
     today = datetime.datetime.now().strftime("%Y-%m-%d")
-    graph.add( (node, DC.modified,
-            Literal(today, datatype=XSD.date)) )
-    graph.add( (node, DC.publisher, Literal("bonsai.uno")) )
-    graph.add( (node, DC.creator, URIRef("http://bonsai.uno/foaf/bonsai.rdf#bonsai")) )
-    graph.add( (node, DC.contributor, Literal(author)) )
-    graph.add( (node, URIRef("http://creativecommons.org/ns#license"), URIRef('http://creativecommons.org/licenses/by/3.0/')) )
+    graph.add((node, DC.modified,
+               Literal(today, datatype=XSD.date)))
+    graph.add((node, DC.publisher, Literal("bonsai.uno")))
+    graph.add((node, DC.creator, URIRef("http://bonsai.uno/foaf/bonsai.rdf#bonsai")))
+    graph.add((node, DC.contributor, Literal(author)))
+    graph.add((node, URIRef("http://creativecommons.org/ns#license"), URIRef('http://creativecommons.org/licenses/by/3.0/')))
 
     return graph
 

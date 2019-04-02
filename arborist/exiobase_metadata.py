@@ -1,9 +1,9 @@
 from . import data_dir
-from .filesystem import create_dir, write_graph
-from .graph_common import NS, add_common_elements, generate_generic_graph
+from .filesystem import write_graph
+from .graph_common import add_common_elements, generate_generic_graph
 from pathlib import Path
-from rdflib import Graph, Literal, RDF, URIRef, Namespace
-from rdflib.namespace import DC, RDFS
+from rdflib import Graph, Literal, RDF, URIRef
+from rdflib.namespace import RDFS
 import pandas
 
 

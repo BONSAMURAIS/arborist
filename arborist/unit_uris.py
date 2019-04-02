@@ -2,15 +2,13 @@ from .filesystem import write_graph
 from .graph_common import add_common_elements
 from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
-from rdflib.namespace import DC, RDFS
+from rdflib.namespace import RDFS
 
 
 def generate_unit_uris(output_base_dir):
     """Note the URIs needed for units. They all come from the Ontology of Units
     of Measure."""
     output_base_dir = Path(output_base_dir)
-
-    om2 = Namespace("http://www.ontology-of-units-of-measure.org/resource/om-2/")
 
     units = [(
         'kilogram',
@@ -46,7 +44,7 @@ def generate_unit_uris(output_base_dir):
 
     for label, uri, kind in units:
         node = URIRef(uri)
-        g.add( (node, RDF.type, URIRef(kind)) )
-        g.add( (node, RDFS.label, Literal(label)) )
+        g.add((node, RDF.type, URIRef(kind)))
+        g.add((node, RDFS.label, Literal(label)))
 
     write_graph(output_base_dir / "unit", g)

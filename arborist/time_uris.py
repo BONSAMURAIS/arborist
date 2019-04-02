@@ -1,8 +1,8 @@
 from .filesystem import write_graph
-from .graph_common import NS, add_common_elements
+from .graph_common import add_common_elements
 from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
-from rdflib.namespace import DC, RDFS, OWL, XSD
+from rdflib.namespace import RDFS, OWL, XSD
 
 
 def generate_time_uris(output_base_dir):
@@ -24,7 +24,6 @@ def generate_time_uris(output_base_dir):
     }
 
     owltime = Namespace("https://www.w3.org/TR/owl-time/")
-    nbt = Namespace("http://rdf.bonsai.uno/time/")
 
     g = add_common_elements(
         Graph(),

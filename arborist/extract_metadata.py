@@ -1,6 +1,5 @@
-import csv
 from pathlib import Path
-from rdflib import Graph, URIRef
+from rdflib import Graph
 from rdflib.namespace import RDFS
 
 metadata_dir = Path(__file__).parent / "meta"
@@ -17,6 +16,7 @@ def get_turtle_labels(filepath):
         if y == RDFS.label:
             # Flip to go from label to URI
             yield str(z), str(x)
+
 
 def get_metadata(rdf_base):
     if not isinstance(rdf_base, Path):

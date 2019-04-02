@@ -6,11 +6,11 @@ import pandas
 from . import data_dir
 
 def generate_entsoe_uris(output_base_dir):
-    
+
     #add namespaces
     nb = Namespace("http://ontology.bonsai.uno/core#")
     nat = Namespace("http://rdf.bonsai.uno/activitytype/exiobase3_3_17/")
-    
+
 
     #add prefix
     g = Graph()
@@ -27,7 +27,7 @@ def generate_entsoe_uris(output_base_dir):
     g.bind("rdfs",RDFS)
     g.bind("foaf",FOAF)
 
-    
+
     data = pandas.read_csv(data_dir / 'entsoe2exiobase.csv')
 
     data['entsoe_name']=data['entsoe name'].str.replace('\s|/','_',
@@ -40,16 +40,16 @@ def generate_entsoe_uris(output_base_dir):
 
         #this is hardcoding is wrong
         entsoe_uri='http://rdf.bonsai.uno/activitytype/entsoe/'+entsoe_code
-        
-        g.add( ("brdaten:{}".format(entsoe_code),
+
+        g.add(("brdaten:{}".format(entsoe_code),
                  RDF.type,
-                 nb.ActivityType) )
-        
-        g.add( ("brdaten:{}".format(entsoe_code),
+                 nb.ActivityType))
+
+        g.add(("brdaten:{}".format(entsoe_code),
                 OWL.sameAs,
                 'brdfat:{}'.format(exiobase_code)))
-        
-        g.add( ("brdaten:{}".format(entsoe_code),
+
+        g.add(("brdaten:{}".format(entsoe_code),
                 RDFS.label,
                 entsoe_label
                )
@@ -66,7 +66,7 @@ def generate_entsoe_uris(output_base_dir):
 
         #print(entsoe_uri)/
 
-    create_dir(output_base_dir / "activitytype" / "entsoe") 
+    create_dir(output_base_dir / "activitytype" / "entsoe")
     with open(
             output_base_dir / "activitytype" / "entsoe" / "entsoe.ttl",
             "wb") as f:
