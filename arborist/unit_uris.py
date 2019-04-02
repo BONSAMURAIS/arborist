@@ -1,4 +1,5 @@
-from .filesystem import create_dir
+from .filesystem import write_graph
+from .graph_common import add_common_elements
 from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
 from rdflib.namespace import DC, RDFS
@@ -33,7 +34,14 @@ def generate_unit_uris(output_base_dir):
         'http://www.ontology-of-units-of-measure.org/resource/om-2/UnitExponentiation'
     )]
 
-    g = Graph()
+    g = add_common_elements(
+        Graph(),
+        base_uri="http://rdf.bonsai.uno/unit/",
+        title="Unit definitions used in BONSAI",
+        description="Units from ontology-of-units-of-measure used in BONSAI",
+        author="Chris Mutel",
+        version="0.2",
+    )
     g.bind('om2', 'http://www.ontology-of-units-of-measure.org/resource/om-2/')
 
     for label, uri, kind in units:
@@ -41,12 +49,4 @@ def generate_unit_uris(output_base_dir):
         g.add( (node, RDF.type, URIRef(kind)) )
         g.add( (node, RDFS.label, Literal(label)) )
 
-    create_dir(output_base_dir / "unit")
-    with open(
-            output_base_dir / "unit" / "unit.ttl",
-            "wb") as f:
-        g.serialize(f, format="turtle", encoding='utf-8')
-
-
-
-
+    write_graph(output_base_dir / "unit", g)

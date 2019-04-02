@@ -22,7 +22,7 @@ from .exiobase_metadata import generate_exiobase_metadata_uris
 from .extract_metadata import get_metadata
 from .foaf import generate_foaf_uris
 from .time_uris import generate_time_uris
-from .units import generate_unit_uris
+from .unit_uris import generate_unit_uris
 from .us_epa import generate_us_epa_uris
 
 
