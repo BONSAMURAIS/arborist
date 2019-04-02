@@ -33,6 +33,7 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     graph.bind('bont', 'http://ontology.bonsai.uno/core#')
     graph.bind("dc", DC)
     graph.bind("foaf", FOAF)
+    graph.bind("xsd", XSD)
     graph.bind("owl", OWL)
     graph.bind('skos', SKOS)
     graph.bind("ot", "https://www.w3.org/TR/owl-time/")
@@ -139,6 +140,5 @@ def generate_generic_graph(output_base_dir, kind, data, directory_structure,
         output_dir = output_dir / kind.lower()
     for subdir in directory_structure:
         output_dir = output_dir / subdir
-    create_dir(output_dir)
 
     write_graph(output_dir, g)
