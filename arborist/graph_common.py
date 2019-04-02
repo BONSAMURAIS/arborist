@@ -1,4 +1,4 @@
-from .filesystem import create_dir
+from .filesystem import create_dir, write_graph
 from pathlib import Path
 from rdflib import Literal, RDF, URIRef, Namespace, Graph
 from rdflib.namespace import DC, RDFS, OWL, FOAF, XSD, SKOS
@@ -141,7 +141,4 @@ def generate_generic_graph(output_base_dir, kind, data, directory_structure,
         output_dir = output_dir / subdir
     create_dir(output_dir)
 
-    fp = output_dir / "{}.ttl".format(directory_structure[-1])
-
-    with open(fp, "wb") as f:
-        g.serialize(f, format="turtle", encoding='utf-8')
+    write_graph(output_dir, g)
