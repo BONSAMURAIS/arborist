@@ -6,7 +6,7 @@ from .filesystem import write_graph
 from .graph_common import NS, add_common_elements
 from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
-from rdflib.namespace import DC, RDFS, OWL
+from rdflib.namespace import RDFS, OWL
 import pandas
 
 
