@@ -14,16 +14,16 @@ def generate_us_epa_uris(output_base_dir):
     data = pandas.read_csv(data_dir / 'USEPA_URI.csv')
     output_base_dir = Path(output_base_dir)
 
-    uri = "http://rdf.bonsai.uno/flowobject/us_epa_elem_flow_list/"
+    uri = "http://rdf.bonsai.uno/flowobject/us_epa_elem/"
     epa_ns = Namespace(uri)
 
     g = add_common_elements(
         Graph(),
         base_uri=uri,
         title="US EPA Elementary Flow List",
-        description="US EPA Elementary Flow List",
+        description="US EPA Elementary Flow List from https://github.com/USEPA/Federal-LCA-Commons-Elementary-Flow-List",
         author="Tiago Morais",
-        version="0.2 (2019-04-02",
+        version="0.3 (2019-04-03)",
     )
     g.bind('brdffo', uri)
 
@@ -34,6 +34,6 @@ def generate_us_epa_uris(output_base_dir):
         g.add((node, RDFS.label, Literal(label)))
 
     write_graph(
-        output_base_dir / "flowobject" / "us_epa_elem_flow_list",
+        output_base_dir / "flowobject" / "us_epa_elem",
         g
     )
