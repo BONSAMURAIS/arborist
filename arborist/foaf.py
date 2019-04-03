@@ -1,7 +1,7 @@
-from .filesystem import create_dir
+from .filesystem import write_graph
 from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
-from rdflib.namespace import RDFS, FOAF, SKOS
+from rdflib.namespace import FOAF, SKOS
 
 
 def generate_foaf_uris(output_base_dir):
@@ -24,8 +24,4 @@ def generate_foaf_uris(output_base_dir):
     g.add((node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q2323664")))
     g.add((node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q18692990")))
 
-    create_dir(output_base_dir / "foaf")
-    with open(
-            output_base_dir / "foaf" / "foaf.ttl",
-            "wb") as f:
-        g.serialize(f, format="turtle", encoding='utf-8')
+    write_graph(output_base_dir / "foaf", g)
