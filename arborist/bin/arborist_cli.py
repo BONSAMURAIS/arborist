@@ -1,25 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Generic executable.
-
-This documentation defines how the program is run; see http://docopt.org/.
-
-Commands:
+"""Arborist CLI.
 
 Usage:
+  arborist-cli regenerate <dirpath>
 
 Options:
+  -h --help     Show this screen.
+  --version     Show version.
 
 """
 from docopt import docopt
-from arborist import *
+from arborist import generate_all
 import sys
 
 
 def main():
     try:
-        args = docopt(__doc__, version='Version number for *this* CLI')
-        some_wrapper_function(args)
+        args = docopt(__doc__, version='0.2')
+        generate_all(args['<dirpath>'])
     except KeyboardInterrupt:
         print("Terminating CLI")
         sys.exit(1)

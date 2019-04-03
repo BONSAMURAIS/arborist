@@ -33,7 +33,7 @@ def generate_all(base_dir):
     generate_electricity_grid_uris(base_dir)
     generate_entsoe_uris(base_dir)
     generate_exiobase_metadata_uris(base_dir)
-    generate_exiobase_us_epa_uris(base_dir)
+    # generate_exiobase_us_epa_uris(base_dir)
     generate_foaf_uris(base_dir)
     generate_time_uris(base_dir)
     generate_unit_uris(base_dir)

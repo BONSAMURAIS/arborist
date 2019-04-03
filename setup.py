@@ -34,7 +34,7 @@ setup(
     package_data={'arborist': package_files(os.path.join('arborist', 'data'))},
     entry_points = {
         'console_scripts': [
-            'arborist-cli = arborist.bin.rename_me_cli:main',
+            'arborist-cli = arborist.bin.arborist_cli:main',
         ]
     },
     install_requires=[
