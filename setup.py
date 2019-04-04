@@ -26,7 +26,7 @@ def package_files(directory):
 
 setup(
     name='arborist',
-    version="0.2",
+    version="0.3",
     packages=packages,
     author="BONSAI team",
     author_email="info@bonsai.uno",

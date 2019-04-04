@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3] - 2019-04-04
+
+### Changed
+
+* Changed the data structure returned by `extract_metadata.get_metadata` to be a nested dictionary
+* Changed the modelling of electricity in `electricity_grid`.
+
 ## [0.2] - 2019-04-04
 
 ### Added
