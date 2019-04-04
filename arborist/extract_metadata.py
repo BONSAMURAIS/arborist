@@ -26,18 +26,22 @@ def get_metadata(rdf_base):
 
     _ = lambda x: x if x.startswith("http://") else "http://" + x
 
-    exiobase_activity_types = dict(get_turtle_labels(
+    metadata["activitytype"] = {}
+    metadata["activitytype"]['exiobase'] = dict(get_turtle_labels(
         rdf_base / "activitytype" / "exiobase3_3_17" / "exiobase3_3_17.ttl"
     ))
-    grid_activity_types = dict(get_turtle_labels(
+    metadata["activitytype"]['electricity'] = dict(get_turtle_labels(
         rdf_base / "activitytype" / "core" / "electricity_grid" / "electricity_grid.ttl"
     ))
-
-    metadata["activitytype"] = exiobase_activity_types
-    metadata["activitytype"].update(grid_activity_types)
-
-    metadata["flowobject"] = dict(get_turtle_labels(
+    metadata["activitytype"]['entsoe'] = dict(get_turtle_labels(
+        rdf_base / "activitytype" / "entsoe" / "entsoe.ttl"
+    ))
+    metadata["flowobject"] = {}
+    metadata["flowobject"]['exiobase'] = dict(get_turtle_labels(
         rdf_base / "flowobject" / "exiobase3_3_17" / "exiobase3_3_17.ttl"
+    ))
+    metadata["flowobject"]['electricity'] = dict(get_turtle_labels(
+        rdf_base / "flowobject" / "core" / "electricity_grid" / "electricity_grid.ttl"
     ))
     metadata["location"] = dict(get_turtle_labels(
         rdf_base / "location" / "exiobase3_3_17" / "exiobase3_3_17.ttl"
