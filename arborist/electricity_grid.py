@@ -21,11 +21,11 @@ def generate_electricity_grid_uris(output_base_dir):
         output_base_dir,
         kind='FlowObject',
         data=[
-            ("Market for electricity", "elec"),
+            ("Electricity", "elec"),
         ],
         directory_structure=["core", "electricity_grid"],
         title="Electricity grid flow objects for BONSAI",
         description='FlowObject instances needed for BONSAI electricity grid modelling',
         author="Arthur Jakobs",
-        version="0.2",
+        version="0.3",
     )
