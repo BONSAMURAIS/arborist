@@ -11,7 +11,7 @@ __all__ = (
     "generate_all",
     "get_metadata",
 )
-__version__ = (0, 1)
+__version__ = (0, 2)
 
 from pathlib import Path
 data_dir = Path(__file__).parent / "data"
