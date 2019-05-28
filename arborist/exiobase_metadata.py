@@ -3,7 +3,7 @@ from .filesystem import write_graph
 from .graph_common import add_common_elements, generate_generic_graph
 from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef
-from rdflib.namespace import RDFS
+from rdflib.namespace import RDFS, OWL
 import pandas
 
 
@@ -66,8 +66,11 @@ def generate_exiobase_metadata_uris(output_base_dir):
     g.bind("schema", "http://schema.org/")
 
     for name, code in data:
-        node = URIRef("http://" + code)
+        geo_node = URIRef("http://" + code)
+        node = URIRef("http://rdf.bonsai.uno/location/exiobase3_3_17/#"+name)
         g.add((node, RDF.type, URIRef("http://schema.org/Place")))
         g.add((node, RDFS.label, Literal(name)))
+        g.add((node, OWL.sameAs, geo_node))
+
 
     write_graph(output_base_dir / "location" / "exiobase3_3_17", g)
