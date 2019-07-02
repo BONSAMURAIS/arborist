@@ -34,22 +34,23 @@ def generate_time_uris(output_base_dir):
         version="0.2"
     )
 
-    g.bind('brdftime', 'http://rdf.bonsai.uno/time/')
+    BRDFTIME = Namespace('http://rdf.bonsai.uno/time/#')
+    g.bind('brdftime', BRDFTIME)
 
-    oneyear = URIRef("brdftime:oneyearlong")
+    oneyear = BRDFTIME.oneyearlong
     g.add((oneyear, RDF.type, owltime.DurationDescription))
     g.add((oneyear, owltime.years, Literal("1", datatype=XSD.integer)))
 
     for year, wd in WIKIDATA_MAPPING.items():
-        end = URIRef("brdftime:{}end".format(year))
+        end = BRDFTIME['{}end'.format(year)]
         g.add((end, RDF.type, owltime.Instant))
         g.add((end, owltime.inXSDDate, Literal("{}-12-31".format(year), datatype=XSD.date)))
 
-        begin = URIRef("brdftime:{}start".format(year))
+        begin =  BRDFTIME['{}start'.format(year)]
         g.add((begin, RDF.type, owltime.Instant))
         g.add((begin, owltime.inXSDDate, Literal("{}-01-01".format(year), datatype=XSD.date)))
 
-        node = URIRef("brdftime:{}".format(year))
+        node = BRDFTIME['{}'.format(year)]
         g.add((node, RDF.type, owltime.ProperInterval))
         g.add((node, RDFS.label, Literal(year)))
         g.add((node, owltime.hasBeginning, begin))
