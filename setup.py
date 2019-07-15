@@ -1,20 +1,5 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 import os
-
-packages = []
-root_dir = os.path.dirname(__file__)
-if root_dir:
-    os.chdir(root_dir)
-
-# Probably should be changed, __init__.py is no longer required for Python 3
-for dirpath, dirnames, filenames in os.walk('arborist'):
-    # Ignore dirnames that start with '.'
-    if '__init__.py' in filenames:
-        pkg = dirpath.replace(os.path.sep, '.')
-        if os.path.altsep:
-            pkg = pkg.replace(os.path.altsep, '.')
-        packages.append(pkg)
-
 
 def package_files(directory):
     paths = []
@@ -27,7 +12,7 @@ def package_files(directory):
 setup(
     name='arborist',
     version="0.3",
-    packages=packages,
+    packages=find_packages(),
     author="BONSAI team",
     author_email="info@bonsai.uno",
     license=open('LICENSE').read(),
