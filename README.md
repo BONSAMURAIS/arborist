@@ -1,6 +1,8 @@
 # Arborist
 
-Generate the URIs needed for the BONSAI knowledge graph. Designed to work with the BONSAI [rdf repository](https://rdf.bonsai.uno/) and [rdf website](https://rdf.bonsai.uno/).
+Arborist creates turtle files of the istances of data based on an ontology. The turtle files are needed for the BONSAI knowledge graph. 
+
+The turtle files generated are stored in the BONSAI [rdf repository](https://github.com/BONSAMURAIS/rdf).
 
 Currently generates the following:
 
