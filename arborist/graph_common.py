@@ -31,12 +31,12 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     if not base_uri.endswith("/"):
         raise ValueError("`base_uri` must end with '/'")
 
-    graph.bind('bont', 'http://ontology.bonsai.uno/core#')
+    graph.bind("bont", "http://ontology.bonsai.uno/core#")
     graph.bind("dc", DC)
     graph.bind("foaf", FOAF)
     graph.bind("xsd", XSD)
     graph.bind("owl", OWL)
-    graph.bind('skos', SKOS)
+    graph.bind("skos", SKOS)
     graph.bind("ot", "https://www.w3.org/TR/owl-time/")
     graph.bind("dtype", "http://purl.org/dc/dcmitype/")
 
@@ -48,19 +48,32 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     graph.add((node, NS.vann.preferredNamespaceUri, URIRef(base_uri + "#")))
     graph.add((node, OWL.versionInfo, Literal(version)))
     today = datetime.datetime.now().strftime("%Y-%m-%d")
-    graph.add((node, DC.modified,
-               Literal(today, datatype=XSD.date)))
+    graph.add((node, DC.modified, Literal(today, datatype=XSD.date)))
     graph.add((node, DC.publisher, Literal("bonsai.uno")))
     graph.add((node, DC.creator, URIRef("http://bonsai.uno/foaf/bonsai.rdf#bonsai")))
     graph.add((node, DC.contributor, Literal(author)))
-    graph.add((node, URIRef("http://creativecommons.org/ns#license"), URIRef('http://creativecommons.org/licenses/by/3.0/')))
+    graph.add(
+        (
+            node,
+            URIRef("http://creativecommons.org/ns#license"),
+            URIRef("http://creativecommons.org/licenses/by/3.0/"),
+        )
+    )
 
     return graph
 
 
-def generate_generic_graph(output_base_dir, kind, data, directory_structure,
-                           title, description, author, version,
-                           custom_binds=None):
+def generate_generic_graph(
+    output_base_dir,
+    kind,
+    data,
+    directory_structure,
+    title,
+    description,
+    author,
+    version,
+    custom_binds=None,
+):
     """Generate a complete ``Turtle`` file describing a specific set of graph metadata.
 
     Input args:
@@ -103,7 +116,13 @@ def generate_generic_graph(output_base_dir, kind, data, directory_structure,
 
     output_base_dir = Path(output_base_dir)
 
-    base_uri = "http://rdf.bonsai.uno/" + kind.lower() + "/" + "/".join(directory_structure) + "/"
+    base_uri = (
+        "http://rdf.bonsai.uno/"
+        + kind.lower()
+        + "/"
+        + "/".join(directory_structure)
+        + "/"
+    )
 
     g = add_common_elements(
         graph=Graph(),

@@ -11,7 +11,7 @@ import pandas
 
 
 def generate_us_epa_uris(output_base_dir):
-    data = pandas.read_csv(data_dir / 'USEPA_URI.csv')
+    data = pandas.read_csv(data_dir / "USEPA_URI.csv")
     output_base_dir = Path(output_base_dir)
 
     uri = "http://rdf.bonsai.uno/flowobject/us_epa_elem/"
@@ -25,7 +25,7 @@ def generate_us_epa_uris(output_base_dir):
         author="Tiago Morais",
         version="0.3 (2019-04-03)",
     )
-    g.bind('brdffo', uri)
+    g.bind("brdffo", uri)
 
     for label, code in data.values:
         node = URIRef(epa_ns[code])
@@ -33,7 +33,4 @@ def generate_us_epa_uris(output_base_dir):
         g.add((node, OWL.sameAs, URIRef("http://www.chemspider.com/{}".format(code))))
         g.add((node, RDFS.label, Literal(label)))
 
-    write_graph(
-        output_base_dir / "flowobject" / "us_epa_elem",
-        g
-    )
+    write_graph(output_base_dir / "flowobject" / "us_epa_elem", g)

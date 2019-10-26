@@ -27,37 +27,61 @@ def generate_time_uris(output_base_dir):
 
     g = add_common_elements(
         Graph(),
-        base_uri='http://rdf.bonsai.uno/time/',
+        base_uri="http://rdf.bonsai.uno/time/",
         title="Years 2010 - 2020",
         description="Complete years 2010 - 2020 for use in BONSAI",
-        author='Chris Mutel',
-        version="0.2"
+        author="Chris Mutel",
+        version="0.2",
     )
 
-    BRDFTIME = Namespace('http://rdf.bonsai.uno/time/#')
-    g.bind('brdftime', BRDFTIME)
+    BRDFTIME = Namespace("http://rdf.bonsai.uno/time/#")
+    g.bind("brdftime", BRDFTIME)
 
     oneyear = BRDFTIME.oneyearlong
     g.add((oneyear, RDF.type, owltime.DurationDescription))
     g.add((oneyear, owltime.years, Literal("1", datatype=XSD.integer)))
 
     for year, wd in WIKIDATA_MAPPING.items():
-        end = BRDFTIME['{}end'.format(year)]
+        end = BRDFTIME["{}end".format(year)]
         g.add((end, RDF.type, owltime.Instant))
-        g.add((end, owltime.inXSDDate, Literal("{}-12-31".format(year), datatype=XSD.date)))
+        g.add(
+            (
+                end,
+                owltime.inXSDDate,
+                Literal("{}-12-31".format(year), datatype=XSD.date),
+            )
+        )
 
-        begin =  BRDFTIME['{}start'.format(year)]
+        begin = BRDFTIME["{}start".format(year)]
         g.add((begin, RDF.type, owltime.Instant))
-        g.add((begin, owltime.inXSDDate, Literal("{}-01-01".format(year), datatype=XSD.date)))
+        g.add(
+            (
+                begin,
+                owltime.inXSDDate,
+                Literal("{}-01-01".format(year), datatype=XSD.date),
+            )
+        )
 
-        node = BRDFTIME['{}'.format(year)]
+        node = BRDFTIME["{}".format(year)]
         g.add((node, RDF.type, owltime.ProperInterval))
         g.add((node, RDFS.label, Literal(year)))
         g.add((node, owltime.hasBeginning, begin))
         g.add((node, owltime.hasEnd, end))
         g.add((node, owltime.hasDurationDescription, oneyear))
-        g.add((node, owltime.inXSDDate, Literal("{}-01-01".format(year), datatype=XSD.date)))
+        g.add(
+            (
+                node,
+                owltime.inXSDDate,
+                Literal("{}-01-01".format(year), datatype=XSD.date),
+            )
+        )
         g.add((node, OWL.sameAs, URIRef(wd)))
-        g.add((node, OWL.sameAs, URIRef("http://reference.data.gov.uk/doc/year/{}".format(year))))
+        g.add(
+            (
+                node,
+                OWL.sameAs,
+                URIRef("http://reference.data.gov.uk/doc/year/{}".format(year)),
+            )
+        )
 
     write_graph(output_base_dir / "time", g)

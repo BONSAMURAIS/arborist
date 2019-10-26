@@ -8,29 +8,28 @@ from .graph_common import generate_generic_graph
 def generate_climate_change_uris(output_base_dir):
     generate_generic_graph(
         output_base_dir,
-        kind='ActivityType',
-        data=[
-            ("Atmospheric energy balance",),
-            ("Temperature increase",),
-        ],
+        kind="ActivityType",
+        data=[("Atmospheric energy balance",), ("Temperature increase",)],
         directory_structure=["lcia", "climate_change"],
         title="Climate change activity types",
-        description='ActivityType instances needed for BONSAI climate change modelling',
+        description="ActivityType instances needed for BONSAI climate change modelling",
         author="Tiago Morais",
         version="0.3",
     )
 
     generate_generic_graph(
         output_base_dir,
-        kind='FlowObject',
+        kind="FlowObject",
         data=[
             ("Radiative forcing",),
-            ("Temperature increase - 100 year horizon",
-             "temperature_increase_100yr_horizon"),
+            (
+                "Temperature increase - 100 year horizon",
+                "temperature_increase_100yr_horizon",
+            ),
         ],
         directory_structure=["lcia", "climate_change"],
         title="Climate change activity types",
-        description='FlowObject instances needed for BONSAI climate change modelling',
+        description="FlowObject instances needed for BONSAI climate change modelling",
         author="Tiago Morais",
         version="0.3",
     )

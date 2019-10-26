@@ -10,27 +10,33 @@ def generate_unit_uris(output_base_dir):
     of Measure."""
     output_base_dir = Path(output_base_dir)
 
-    units = [(
-        'kilogram',
-        'http://www.ontology-of-units-of-measure.org/resource/om-2/kilogram',
-        'http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit',
-    ), (
-        'megajoule',
-        'http://www.ontology-of-units-of-measure.org/resource/om-2/megajoule',
-        'http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit',
-    ), (
-        'euro',
-        'http://www.ontology-of-units-of-measure.org/resource/om-2/euro',
-        'http://www.ontology-of-units-of-measure.org/resource/om-2/Unit',
-    ), (
-        'hectare',
-        'http://www.ontology-of-units-of-measure.org/resource/om-2/hectare',
-        'http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit',
-    ), (
-        'cubic meters',
-        'http://www.ontology-of-units-of-measure.org/resource/om-2/cubicMetre',
-        'http://www.ontology-of-units-of-measure.org/resource/om-2/UnitExponentiation'
-    )]
+    units = [
+        (
+            "kilogram",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/kilogram",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit",
+        ),
+        (
+            "megajoule",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/megajoule",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit",
+        ),
+        (
+            "euro",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/euro",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/Unit",
+        ),
+        (
+            "hectare",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/hectare",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit",
+        ),
+        (
+            "cubic meters",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/cubicMetre",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/UnitExponentiation",
+        ),
+    ]
 
     g = add_common_elements(
         Graph(),
@@ -40,7 +46,7 @@ def generate_unit_uris(output_base_dir):
         author="Chris Mutel",
         version="0.2",
     )
-    g.bind('om2', 'http://www.ontology-of-units-of-measure.org/resource/om-2/')
+    g.bind("om2", "http://www.ontology-of-units-of-measure.org/resource/om-2/")
 
     for label, uri, kind in units:
         node = URIRef(uri)

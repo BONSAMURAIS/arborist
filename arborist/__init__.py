@@ -14,6 +14,7 @@ __all__ = (
 __version__ = (0, 3)
 
 from pathlib import Path
+
 data_dir = Path(__file__).parent / "data"
 
 from .climate_change import generate_climate_change_uris

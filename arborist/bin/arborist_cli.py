@@ -17,8 +17,8 @@ import sys
 
 def main():
     try:
-        args = docopt(__doc__, version='0.2')
-        generate_all(args['<dirpath>'])
+        args = docopt(__doc__, version="0.2")
+        generate_all(args["<dirpath>"])
     except KeyboardInterrupt:
         print("Terminating CLI")
         sys.exit(1)
