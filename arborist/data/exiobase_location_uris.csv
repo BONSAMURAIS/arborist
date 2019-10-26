@@ -1,4 +1,4 @@
-CountryCode,Geonames_code,URI
+name,geonames_code,URI,label
 AT,2782113,sws.geonames.org/2782113
 AU,2077456,sws.geonames.org/2077456
 BE,2802361,sws.geonames.org/2802361
@@ -42,9 +42,9 @@ SK,3057568,sws.geonames.org/3057568
 TR,298795,sws.geonames.org/298795
 TW,1668284,sws.geonames.org/1668284
 US,6252001,sws.geonames.org/6252001
-WA,,rdf.bonsai.uno/location/exiobase3_3_17/WA
-WE,,rdf.bonsai.uno/location/exiobase3_3_17/WE
-WF,,rdf.bonsai.uno/location/exiobase3_3_17/WF
-WL,,rdf.bonsai.uno/location/exiobase3_3_17/WL
-WM,,rdf.bonsai.uno/location/exiobase3_3_17/WM
+WA,,rdf.bonsai.uno/location/exiobase3_3_17/WA,EXIOBASE region RoW Asia and Pacific
+WE,,rdf.bonsai.uno/location/exiobase3_3_17/WE,EXIOBASE region RoW Europe
+WF,,rdf.bonsai.uno/location/exiobase3_3_17/WF,EXIOBASE region RoW Africa
+WL,,rdf.bonsai.uno/location/exiobase3_3_17/WL,EXIOBASE region RoW America
+WM,,rdf.bonsai.uno/location/exiobase3_3_17/WM,EXIOBASE region RoW Middle East
 ZA,953987,sws.geonames.org/953987

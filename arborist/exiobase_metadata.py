@@ -51,7 +51,6 @@ def generate_exiobase_metadata_uris(output_base_dir):
         data_dir / "exiobase_location_uris.csv",
         header=0
     )
-    data = set(zip(df['CountryCode'], df['URI']))
 
     g = add_common_elements(
         Graph(),
@@ -59,18 +58,18 @@ def generate_exiobase_metadata_uris(output_base_dir):
         "Custom locations for EXIOBASE 3.3",
         "Country groupings used EXIOBASE 3.3.17",
         "Chris Mutel",
-        "0.2",
+        "0.3",
     )
     g.bind('gn', 'http://sws.geonames.org/')
     g.bind('brdflo', "http://rdf.bonsai.uno/location/exiobase3_3_17/")
     g.bind("schema", "http://schema.org/")
 
-    for name, code in data:
-        geo_node = URIRef("http://" + code)
-        node = URIRef("http://rdf.bonsai.uno/location/exiobase3_3_17/#"+name)
+    for dct in df.replace({float('nan'): None}).to_dict(orient='records'):
+        if dct['geonames_code']:
+            node = URIRef("http://" + dct['URI'])
+        else:
+            node = URIRef("http://rdf.bonsai.uno/location/exiobase3_3_17/#" + dct['name'])
         g.add((node, RDF.type, URIRef("http://schema.org/Place")))
-        g.add((node, RDFS.label, Literal(name)))
-        g.add((node, OWL.sameAs, geo_node))
-
+        g.add((node, RDFS.label, Literal(dct['label'] or dct['name'])))
 
     write_graph(output_base_dir / "location" / "exiobase3_3_17", g)
