@@ -36,6 +36,16 @@ def generate_unit_uris(output_base_dir):
             "http://www.ontology-of-units-of-measure.org/resource/om-2/cubicMetre",
             "http://www.ontology-of-units-of-measure.org/resource/om-2/UnitExponentiation",
         ),
+        (
+            "tonne",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/tonne",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/SingularUnit"
+        ),
+        (
+            "cubic zettameter",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/cubicZettametre",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/CubicPrefixedMetre"
+        )
     ]
 
     g = add_common_elements(
@@ -44,7 +54,7 @@ def generate_unit_uris(output_base_dir):
         title="Unit definitions used in BONSAI",
         description="Units from ontology-of-units-of-measure used in BONSAI",
         author="Chris Mutel",
-        version="0.2",
+        version="0.3",
     )
     g.bind("om2", "http://www.ontology-of-units-of-measure.org/resource/om-2/")
 
