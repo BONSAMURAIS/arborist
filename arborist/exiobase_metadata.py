@@ -3,7 +3,7 @@ from .filesystem import write_graph
 from .graph_common import add_common_elements, generate_generic_graph
 from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef
-from rdflib.namespace import RDFS, OWL
+from rdflib.namespace import RDFS
 import pandas
 
 
