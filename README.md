@@ -12,9 +12,71 @@ Currently generates the following:
 
 ## Installation
 
+### with package managers [pip or conda]
+
 Installable via `pip` or `conda` (channel `cmutel`). See [requirements](https://github.com/BONSAMURAIS/arborist/blob/master/requirements.txt), though these should be installed automatically.
 
+### manual
+
+Call `python setup.py install` inside the repository:
+
+```
+git clone git@github.com:BONSAMURAIS/arborist.git
+cd arborist
+python setup.py install
+```
+
 ## Usage
+
+### As a command line tool
+
+If the package is correctly installed, you can use the command line tool `arborist-cli` to produce the rdfs as follows:
+
+```
+mkdir output
+arborist-cli regenerate output
+```
+
+This will put inside the `output` directory the following contents:
+
+```
+output
+├── activitytype
+│   ├── core
+│   │   └── electricity_grid
+│   │       └── electricity_grid.ttl
+│   ├── entsoe
+│   │   └── entsoe.ttl
+│   ├── exiobase3_3_17
+│   │   └── exiobase3_3_17.ttl
+│   └── lcia
+│       └── climate_change
+│           └── climate_change.ttl
+├── flowobject
+│   ├── core
+│   │   └── electricity_grid
+│   │       └── electricity_grid.ttl
+│   ├── exiobase3_3_17
+│   │   └── exiobase3_3_17.ttl
+│   ├── lcia
+│   │   └── climate_change
+│   │       └── climate_change.ttl
+│   └── us_epa_elem
+│       └── us_epa_elem.ttl
+├── foaf
+│   └── foaf.ttl
+├── location
+│   └── exiobase3_3_17
+│       └── exiobase3_3_17.ttl
+├── time
+│   └── time.ttl
+└── unit
+    └── unit.ttl
+
+```
+
+
+### As a library
 
 ### Generation of URIs
 
