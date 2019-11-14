@@ -10,16 +10,22 @@ def generate_foaf_uris(output_base_dir):
     output_base_dir = Path(output_base_dir)
 
     org = Namespace("https://www.w3.org/TR/vocab-org/")
+    prov = Namespace("http://www.w3.org/ns/prov/")
+    purl = Namespace("http://purl.org/dc/dcmitype/")
 
     g = Graph()
     g.bind("org", "https://www.w3.org/TR/vocab-org/")
+    g.bind("dtype", "http://purl.org/dc/dcmitype/")
     g.bind("skos", SKOS)
     g.bind("foaf", FOAF)
     g.bind("dc", DC)
     g.bind("owl", OWL)
+    g.bind("prov", "http://www.w3.org/ns/prov/")
+    g.bind("bfoaf", "http://rdf.bonsai.uno/foaf/")
 
     node = URIRef("https://bonsai.uno/foaf/foaf.ttl#bonsai")
     g.add((node, RDF.type, org.Organization))
+    g.add((node, RDF.type, prov.Agent))
     g.add(
         (
             node,
@@ -35,7 +41,7 @@ def generate_foaf_uris(output_base_dir):
     g.add((node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q18692990")))
 
     ds = URIRef("https://bonsai.uno/foaf")
-    g.add((ds, RDF.type, URIRef("https://purl.org/dc/dcmitype/Dataset")))
+    g.add((ds, RDF.type, purl.Dataset))
     g.add((ds, DC.creator, node))
     g.add((ds, DC.publisher, Literal("bonsai.uno")))
     g.add((ds, DC.title, Literal("The BONSAI Organization")))
@@ -44,5 +50,18 @@ def generate_foaf_uris(output_base_dir):
     g.add((ds, FOAF.homepage, URIRef("https://rdf.bonsai.uno/unit/documentation.html")))
     g.add((ds, DC.license, URIRef("https://creativecommons.org/licenses/by/3.0/")))
     g.add((ds, DC.modified, Literal("2019-04-02", datatype=XSD.date)))
+
+    # Exiobase_Consortium
+    ec = URIRef("https://bonsai.uno/foaf/foaf.ttl#exiobase_consortium")
+    g.add((ec, RDF.type, org.Organization))
+    g.add((ec, RDF.type, prov.Agent))
+    g.add(
+        (
+            ec,
+            DC.description,
+            Literal("The EXIOBASE consortium consists of NTNU, TNO, SERI, Universiteit Leiden, WU, and 2.-0 LCA Consultant")
+        )
+    )
+    g.add((ec, FOAF.homepage, URIRef("https://www.exiobase.eu/")))
 
     write_graph(output_base_dir / "foaf", g)

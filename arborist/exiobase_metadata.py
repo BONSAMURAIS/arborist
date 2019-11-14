@@ -1,8 +1,10 @@
 from . import data_dir
 from .filesystem import write_graph
 from .graph_common import add_common_elements, generate_generic_graph
+from .provenance_uris import generate_provenance_uris
+from .graph_common import NS
 from pathlib import Path
-from rdflib import Graph, Literal, RDF, URIRef
+from rdflib import Graph, Literal, RDF, URIRef, XSD
 from rdflib.namespace import RDFS
 import pandas
 
@@ -45,6 +47,13 @@ def generate_exiobase_metadata_uris(output_base_dir):
         version="0.3",
     )
 
+    # Provenance information
+    generate_provenance_uris(
+        output_base_dir,
+        exiobaseVersion="3.3.17",
+        arboristVersion="0.3"
+    )
+
     # Exiobase locations are hardcoded to geoname URIs, so just use CSV
     # created by hand
     df = pandas.read_csv(data_dir / "exiobase_location_uris.csv", header=0)
@@ -70,5 +79,6 @@ def generate_exiobase_metadata_uris(output_base_dir):
             )
         g.add((node, RDF.type, URIRef("http://schema.org/Place")))
         g.add((node, RDFS.label, Literal(dct["label"] or dct["name"])))
+        g.add((URIRef("http://rdf.bonsai.uno/location/exiobase3_3_17/"), NS.prov.hadMember, node))
 
     write_graph(output_base_dir / "location" / "exiobase3_3_17", g)

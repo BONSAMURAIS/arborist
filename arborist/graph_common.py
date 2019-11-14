@@ -11,6 +11,7 @@ class CommonNamespaces:
         self.owltime = Namespace("https://www.w3.org/TR/owl-time/")
         self.vann = Namespace("http://purl.org/vocab/vann/")
         self.dt = Namespace("http://purl.org/dc/dcmitype/")
+        self.prov = Namespace("http://www.w3.org/ns/prov/")
 
 
 NS = CommonNamespaces()
@@ -31,6 +32,10 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     if not base_uri.endswith("/"):
         raise ValueError("`base_uri` must end with '/'")
 
+    prov = Namespace("http://www.w3.org/ns/prov/")
+    bfoaf = Namespace("http://bonsai.uno/foaf/")
+    bprov = Namespace("http://bonsai.uno/prov/")
+
     graph.bind("bont", "http://ontology.bonsai.uno/core#")
     graph.bind("dc", DC)
     graph.bind("foaf", FOAF)
@@ -39,6 +44,9 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     graph.bind("skos", SKOS)
     graph.bind("ot", "https://www.w3.org/TR/owl-time/")
     graph.bind("dtype", "http://purl.org/dc/dcmitype/")
+    graph.bind("prov", "http://www.w3.org/ns/prov/")
+    graph.bind("bprov", "http://bonsai.uno/prov/")
+    graph.bind("bfoaf", "http://bonsai.uno/foaf/")
 
     node = URIRef(base_uri)
     graph.add((node, RDF.type, NS.dt.Dataset))
@@ -52,6 +60,9 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     graph.add((node, DC.publisher, Literal("bonsai.uno")))
     graph.add((node, DC.creator, URIRef("http://bonsai.uno/foaf/bonsai.rdf#bonsai")))
     graph.add((node, DC.contributor, Literal(author)))
+    graph.add((node, prov.wasAttributedTo, bfoaf.exiobase_consortium))
+    graph.add((node, prov.wasGeneratedBy, getattr(bprov, "createRDFModelActivity_" + version.replace(".", "_"))))
+    graph.add((node, prov.generatedAtTime, Literal(today, datatype=XSD.date)))
     graph.add(
         (
             node,
@@ -72,7 +83,7 @@ def generate_generic_graph(
     description,
     author,
     version,
-    custom_binds=None,
+    custom_binds=None
 ):
     """Generate a complete ``Turtle`` file describing a specific set of graph metadata.
 
@@ -87,6 +98,7 @@ def generate_generic_graph(
     * ``author``: String.
     * ``version``: String.
     * ``custom_binds``: TODO
+    * ``custom_elements``: A list of custom elements
 
      **``kind``**
 
@@ -154,6 +166,7 @@ def generate_generic_graph(
         node = URIRef(uri)
         g.add((node, RDF.type, type_))
         g.add((node, RDFS.label, Literal(label)))
+        g.add((URIRef(base_uri), NS.prov.hadMember, node))
 
     output_dir = output_base_dir
     if isinstance(kind, str):
