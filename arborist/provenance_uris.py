@@ -10,8 +10,9 @@ def generate_provenance_uris(output_base_dir, exiobaseVersion, arboristVersion):
     arboristVersion = arboristVersion.replace(".", "_")
     prov = Namespace("http://www.w3.org/ns/prov/")
     purl = Namespace("http://purl.org/dc/dcmitype/")
-    bfoaf = Namespace("http://bonsai.uno/foaf/")
-    bprov = Namespace("http://bonsai.uno/prov/")
+    bfoaf = Namespace("https://bonsai.uno/foaf/")
+    bprov = Namespace("http://rdf.bonsai.uno/prov/")
+    dtype = Namespace("http://purl.org/dc/dcmitype/")
 
     g = Graph()
     g.bind("org", "https://www.w3.org/TR/vocab-org/")
@@ -22,8 +23,18 @@ def generate_provenance_uris(output_base_dir, exiobaseVersion, arboristVersion):
     g.bind("owl", OWL)
     g.bind("rdfs", RDFS)
     g.bind("prov", "http://www.w3.org/ns/prov/")
-    g.bind("bfoaf", "http://rdf.bonsai.uno/foaf#")
-    g.bind("bprov", "http://bonsai.uno/prov/")
+    g.bind("bfoaf", "https://rdf.bonsai.uno/foaf/")
+    g.bind("bprov", "http://rdf.bonsai.uno/prov/")
+
+    node = URIRef(bprov)
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    g.add((node, RDF.type, dtype.Dataset))
+    g.add((node, DC.creator, bfoaf.bonsai))
+    g.add((node, DC.license, URIRef("https://creativecommons.org/licenses/by/3.0/")))
+    g.add((node, DC.modified, Literal(today, datatype=XSD.date)))
+    g.add((node, DC.publisher, Literal("bonsai.uno")))
+    g.add((node, DC.title, Literal("The BONSAI Organization")))
+    g.add((node, OWL.versionInfo, Literal("1.0")))
 
     # Abstract Exiobase Dataset
     ebd = URIRef(bprov.exiobaseDataset)
@@ -42,7 +53,7 @@ def generate_provenance_uris(output_base_dir, exiobaseVersion, arboristVersion):
     g.add((ebd, DC.term("rights"), Literal("Copyright © 2015 - EXIOBASE Consortium")))
 
     # Specific instance of exiobase dataset
-    edbSpecific = URIRef(getattr(bprov, "exiobaseDateset_" + exiobaseVersion))
+    edbSpecific = URIRef(getattr(bprov, "exiobaseDataset_" + exiobaseVersion))
     g.add((edbSpecific, RDF.type, bprov.exiobaseDataset))
     g.add(
         (
@@ -57,43 +68,29 @@ def generate_provenance_uris(output_base_dir, exiobaseVersion, arboristVersion):
     g.add((edbSpecific, DC.term("license"), URIRef("https://www.exiobase.eu/index.php/terms-of-use")))
     g.add((edbSpecific, DC.term("date"), Literal(today, datatype=XSD.date)))
 
-    # Arborist agent
-    arborist = URIRef(bprov.arboristAgent)
-    g.add((arborist, RDF.type, prov.SoftwareAgent))
-    g.add(
-        (
-            arborist,
-            RDFS.label,
-            Literal(
-                "Arborist, a software agent"
-            ),
-        )
-    )
-    g.add((arborist, prov.actedOnBehalfOf, bfoaf.bonsai))
-
     # Abstract createRDFModelActivity
-    crdfma = URIRef(bprov.createRDFMOdelActivity)
+    crdfma = URIRef(bprov.dataExtractionActivity)
     g.add((crdfma, RDF.type, prov.Activity))
     g.add(
         (
             crdfma,
             RDFS.label,
             Literal(
-                "Activity to create instances of flowObjects, activityTypes and Locations based on the BONSAI ontology and a dataset"
+                "Activity to create instances of flowObjects, activityTypes and Locations based on a dataset"
             ),
         )
     )
-    g.add((crdfma, prov.wasAssociatedWith, bprov.arboristAgent))
+    g.add((crdfma, prov.wasAssociatedWith, URIRef(bfoaf.bonsai)))
 
     # Instance of createRDFModelActivity
-    crdfmaConcrete = URIRef(getattr(bprov, "createRDFMOdelActivity_" + arboristVersion))
-    g.add((crdfmaConcrete, RDF.type, bprov.createRDFMOdelActivity))
+    crdfmaConcrete = URIRef(getattr(bprov, "dataExtractionActivity_" + arboristVersion))
+    g.add((crdfmaConcrete, RDF.type, bprov.dataExtractionActivity))
     g.add(
         (
             crdfmaConcrete,
             RDFS.label,
             Literal(
-                "Concrete instance of createRDFModelActivity, version " + arboristVersion
+                "Concrete instance of dataExtractionActivity, version " + arboristVersion
             ),
         )
     )

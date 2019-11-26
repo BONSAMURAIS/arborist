@@ -2,6 +2,7 @@ from .filesystem import write_graph
 from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
 from rdflib.namespace import FOAF, SKOS, DC, OWL, XSD
+import datetime
 
 
 def generate_foaf_uris(output_base_dir):
@@ -12,6 +13,8 @@ def generate_foaf_uris(output_base_dir):
     org = Namespace("https://www.w3.org/TR/vocab-org/")
     prov = Namespace("http://www.w3.org/ns/prov/")
     purl = Namespace("http://purl.org/dc/dcmitype/")
+    bfoaf = Namespace("https://bonsai.uno/foaf/")
+    dtype = Namespace("http://purl.org/dc/dcmitype/")
 
     g = Graph()
     g.bind("org", "https://www.w3.org/TR/vocab-org/")
@@ -21,9 +24,20 @@ def generate_foaf_uris(output_base_dir):
     g.bind("dc", DC)
     g.bind("owl", OWL)
     g.bind("prov", "http://www.w3.org/ns/prov/")
-    g.bind("bfoaf", "http://rdf.bonsai.uno/foaf/")
+    g.bind("bfoaf", "https://bonsai.uno/foaf/")
 
-    node = URIRef("https://bonsai.uno/foaf/foaf.ttl#bonsai")
+    node = URIRef(bfoaf)
+
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    g.add((node, RDF.type, dtype.Dataset))
+    g.add((node, DC.creator, bfoaf.bonsai))
+    g.add((node, DC.license, URIRef("https://creativecommons.org/licenses/by/3.0/")))
+    g.add((node, DC.modified, Literal(today, datatype=XSD.date)))
+    g.add((node, DC.publisher, Literal("bonsai.uno")))
+    g.add((node, DC.title, Literal("The BONSAI Organization")))
+    g.add((node, OWL.versionInfo, Literal("1.0")))
+
+    node = URIRef(bfoaf.bonsai)
     g.add((node, RDF.type, org.Organization))
     g.add((node, RDF.type, prov.Agent))
     g.add(
@@ -40,19 +54,8 @@ def generate_foaf_uris(output_base_dir):
     g.add((node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q2323664")))
     g.add((node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q18692990")))
 
-    ds = URIRef("https://bonsai.uno/foaf")
-    g.add((ds, RDF.type, purl.Dataset))
-    g.add((ds, DC.creator, node))
-    g.add((ds, DC.publisher, Literal("bonsai.uno")))
-    g.add((ds, DC.title, Literal("The BONSAI Organization")))
-    g.add((ds, DC.description, Literal("Contains information about the BONSAI organization")))
-    g.add((ds, OWL.versionInfo, Literal("0.2")))
-    g.add((ds, FOAF.homepage, URIRef("https://rdf.bonsai.uno/unit/documentation.html")))
-    g.add((ds, DC.license, URIRef("https://creativecommons.org/licenses/by/3.0/")))
-    g.add((ds, DC.modified, Literal("2019-04-02", datatype=XSD.date)))
-
     # Exiobase_Consortium
-    ec = URIRef("https://bonsai.uno/foaf/foaf.ttl#exiobase_consortium")
+    ec = URIRef(bfoaf.exiobase_consortium)
     g.add((ec, RDF.type, org.Organization))
     g.add((ec, RDF.type, prov.Agent))
     g.add(

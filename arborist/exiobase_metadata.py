@@ -47,7 +47,6 @@ def generate_exiobase_metadata_uris(output_base_dir):
         version="0.3",
     )
 
-    # Provenance information
     generate_provenance_uris(
         output_base_dir,
         exiobaseVersion="3.3.17",
