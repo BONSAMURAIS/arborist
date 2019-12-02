@@ -50,8 +50,7 @@ def generate_exiobase_metadata_uris(output_base_dir):
     generate_provenance_uris(
         output_base_dir,
         exiobase_version="3.3.17",
-        arborist_version="0.3",
-        arborist_url="https://github.com/BONSAMURAIS/arborist/commit/da526dcec14124d9373a3d380334ded428817949"
+        arborist_version="0.3"
     )
 
     # Exiobase locations are hardcoded to geoname URIs, so just use CSV

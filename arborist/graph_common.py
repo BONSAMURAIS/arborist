@@ -57,14 +57,13 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     graph.add((node, OWL.versionInfo, Literal(version)))
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     graph.add((node, DC.modified, Literal(today, datatype=XSD.date)))
-    graph.add((node, DC.publisher, Literal("bonsai.uno")))
-    graph.add((node, DC.creator, URIRef("http://bonsai.uno/foaf/bonsai.rdf#bonsai")))
-    graph.add((node, DC.contributor, Literal(author)))
+    graph.add((node, DC.publisher, bfoaf.bonsai))
+    graph.add((node, DC.creator, bfoaf.bonsai))
 
     # Provenance
     graph.add((node, RDF.type, prov.Entity))
-    graph.add((node, prov.wasAttributedTo, bfoaf.exiobase_consortium))
-    graph.add((node, prov.wasGeneratedBy, getattr(bprov, "dataExtractionActivity_" + version.replace(".", "_"))))
+    graph.add((node, prov.wasAttributedTo, bfoaf.bonsai))
+    graph.add((node, prov.wasGeneratedBy, bprov["dataExtractionActivity_" + version.replace(".", "_")]))
     graph.add((node, prov.generatedAtTime, Literal(today, datatype=XSD.date)))
     graph.add(
         (
