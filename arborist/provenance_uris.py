@@ -10,23 +10,23 @@ def generate_provenance_uris(output_base_dir, exiobase_version, arborist_version
     arborist_version = arborist_version.replace(".", "_")
     prov = Namespace("http://www.w3.org/ns/prov#")
     purl = Namespace("http://purl.org/dc/dcmitype/")
-    bfoaf = Namespace("https://rdf.bonsai.uno/foaf/")
-    bprov = Namespace("http://rdf.bonsai.uno/prov/")
+    bfoaf = Namespace("http://rdf.bonsai.uno/foaf#")
+    bprov = Namespace("http://rdf.bonsai.uno/prov#")
     dtype = Namespace("http://purl.org/dc/dcmitype/")
     vann = Namespace("http://purl.org/vocab/vann/")
 
     g = Graph()
     g.bind("org", "https://www.w3.org/TR/vocab-org/")
-    g.bind("dtype", "http://purl.org/dc/dcmitype/")
+    g.bind("dtype", dtype)
     g.bind("skos", SKOS)
     g.bind("foaf", FOAF)
     g.bind("dc", DC)
     g.bind("owl", OWL)
     g.bind("rdfs", RDFS)
-    g.bind("prov", "http://www.w3.org/ns/prov#")
-    g.bind("bfoaf", "https://rdf.bonsai.uno/foaf/")
-    g.bind("bprov", "http://rdf.bonsai.uno/prov/")
-    g.bind("vann", "http://purl.org/vocab/vann/")
+    g.bind("prov", prov)
+    g.bind("bfoaf", bfoaf)
+    g.bind("bprov", bprov)
+    g.bind("vann", vann)
 
     # Meta information about the Named Graph
     node = URIRef(bprov)
@@ -34,7 +34,7 @@ def generate_provenance_uris(output_base_dir, exiobase_version, arborist_version
     g.add((node, RDF.type, dtype.Dataset))
     g.add((node, DC.contributor, Literal("BONSAI team")))
     g.add((node, DC.description, Literal("Provenance information about datasets and data extraction activities")))
-    g.add((node, vann.preferredNamespaceUri, URIRef("http://rdf.bonsai.uno/prov/")))
+    g.add((node, vann.preferredNamespaceUri, URIRef(bprov)))
     g.add((node, DC.creator, bfoaf.bonsai))
     g.add((node, DC.license, URIRef("https://creativecommons.org/licenses/by/3.0/")))
     g.add((node, DC.modified, Literal(today, datatype=XSD.date)))
@@ -61,6 +61,7 @@ def generate_provenance_uris(output_base_dir, exiobase_version, arborist_version
     g.add((ebd, DC.term("date"), Literal(today, datatype=XSD.date)))
     g.add((ebd, prov.wasAttributedTo, URIRef(bfoaf.exiobase_consortium)))
     g.add((ebd, DC.term("rights"), Literal("Copyright © 2015 - EXIOBASE Consortium")))
+    g.add((ebd, prov.hadPrimarySource, URIRef("https://www.exiobase.eu/index.php/data-download/exiobase3hyb")))
 
     # dataExtractionActivity
     arborist_uri = bprov["dataExtractionActivity_" + arborist_version]

@@ -4,7 +4,7 @@ from .graph_common import add_common_elements, generate_generic_graph
 from .provenance_uris import generate_provenance_uris
 from .graph_common import NS
 from pathlib import Path
-from rdflib import Graph, Literal, RDF, URIRef, XSD
+from rdflib import Graph, Literal, RDF, URIRef, XSD, OWL
 from rdflib.namespace import RDFS
 import pandas
 
@@ -59,25 +59,25 @@ def generate_exiobase_metadata_uris(output_base_dir):
 
     g = add_common_elements(
         Graph(),
-        "http://rdf.bonsai.uno/location/exiobase3_3_17/",
+        "http://rdf.bonsai.uno/location/exiobase3_3_17#",
         "Custom locations for EXIOBASE 3.3",
         "Country groupings used EXIOBASE 3.3.17",
         "Chris Mutel",
         "0.3",
     )
     g.bind("gn", "http://sws.geonames.org/")
-    g.bind("brdflo", "http://rdf.bonsai.uno/location/exiobase3_3_17/")
+    g.bind("brdflo", "http://rdf.bonsai.uno/location/exiobase3_3_17#")
     g.bind("schema", "http://schema.org/")
 
     for dct in df.replace({float("nan"): None}).to_dict(orient="records"):
-        if dct["geonames_code"]:
-            node = URIRef("http://" + dct["URI"])
-        else:
-            node = URIRef(
-                "http://rdf.bonsai.uno/location/exiobase3_3_17/#" + dct["name"]
-            )
+
+        geoname = URIRef("http://" + dct["URI"])
+        node = URIRef("http://rdf.bonsai.uno/location/exiobase3_3_17#" + dct["name"])
+
         g.add((node, RDF.type, URIRef("http://schema.org/Place")))
         g.add((node, RDFS.label, Literal(dct["label"] or dct["name"])))
-        g.add((URIRef("http://rdf.bonsai.uno/location/exiobase3_3_17/"), NS.prov.hadMember, node))
+        if node != geoname:
+            g.add((node, OWL.sameAs, URIRef(geoname)))
+        g.add((URIRef("http://rdf.bonsai.uno/location/exiobase3_3_17#"), NS.prov.hadMember, node))
 
     write_graph(output_base_dir / "location" / "exiobase3_3_17", g)
