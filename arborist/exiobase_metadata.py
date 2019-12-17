@@ -26,7 +26,7 @@ def generate_exiobase_metadata_uris(output_base_dir):
         title="EXIOBASE 3.3.17 activity types",
         description="ActivityType instances needed for BONSAI modelling of EXIOBASE version 3.3.17",
         author="BONSAI team",
-        version="0.3",
+        version="0.4",
     )
 
     # # TODO: Need to add preferred unit
@@ -44,7 +44,7 @@ def generate_exiobase_metadata_uris(output_base_dir):
         title="EXIOBASE 3.3.17 flow objects",
         description="FlowObject instances needed for BONSAI modelling of EXIOBASE version 3.3.17",
         author="BONSAI team",
-        version="0.3",
+        version="0.4",
     )
 
     generate_provenance_uris(
@@ -64,7 +64,7 @@ def generate_exiobase_metadata_uris(output_base_dir):
         "Custom locations for EXIOBASE 3.3",
         "Country groupings used EXIOBASE 3.3.17",
         "Chris Mutel",
-        "0.3",
+        "0.4",
     )
     g.bind("gn", "http://sws.geonames.org/")
     g.bind("brdflo", "http://rdf.bonsai.uno/location/exiobase3_3_17#")

@@ -31,7 +31,7 @@ def generate_time_uris(output_base_dir):
         title="Years 2010 - 2020",
         description="Complete years 2010 - 2020 for use in BONSAI",
         author="Chris Mutel",
-        version="0.2",
+        version="0.4",
     )
 
     BRDFTIME = Namespace("http://rdf.bonsai.uno/time#")
