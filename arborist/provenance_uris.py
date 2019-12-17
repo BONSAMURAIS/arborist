@@ -4,7 +4,7 @@ from rdflib.namespace import FOAF, SKOS, DC, OWL, XSD, RDFS
 import datetime
 
 
-def generate_provenance_uris(output_base_dir, exiobase_version, arborist_version):
+def generate_provenance_uris(output_base_dir, exiobase_version, exiobase_update_date, arborist_version):
 
     exiobase_version = exiobase_version.replace(".", "_")
     arborist_version = arborist_version.replace(".", "_")
@@ -43,7 +43,7 @@ def generate_provenance_uris(output_base_dir, exiobase_version, arborist_version
     g.add((node, OWL.versionInfo, Literal("1.0")))
 
     # exiobase dataset
-    ebd = bprov["exiobaseDataset_" + exiobase_version]
+    ebd = bprov["exiobaseDataset_{}".format(exiobase_version)]
     g.add((ebd, RDF.type, purl.Dataset))
     g.add((ebd, RDF.type, prov.Entity))
     g.add(
@@ -51,20 +51,20 @@ def generate_provenance_uris(output_base_dir, exiobase_version, arborist_version
             ebd,
             RDFS.label,
             Literal(
-                "A LCSA dataset created by the EXIOBASE-Consortium, version " + exiobase_version
+                "A LCSA dataset created by the EXIOBASE-Consortium, version {}".format(exiobase_version)
             ),
         )
     )
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     g.add((ebd, OWL.versionInfo, Literal("3.3.17")))
     g.add((ebd, DC.term("license"), URIRef("https://www.exiobase.eu/index.php/terms-of-use")))
-    g.add((ebd, DC.term("date"), Literal(today, datatype=XSD.date)))
+    g.add((ebd, DC.term("date"), Literal(exiobase_update_date, datatype=XSD.date)))
     g.add((ebd, prov.wasAttributedTo, URIRef(bfoaf.exiobase_consortium)))
     g.add((ebd, DC.term("rights"), Literal("Copyright © 2015 - EXIOBASE Consortium")))
     g.add((ebd, prov.hadPrimarySource, URIRef("https://www.exiobase.eu/index.php/data-download/exiobase3hyb")))
 
     # dataExtractionActivity
-    arborist_uri = bprov["dataExtractionActivity_" + arborist_version]
+    arborist_uri = bprov["dataExtractionActivity_{}".format(arborist_version)]
     g.add((arborist_uri, RDF.type, prov.Activity))
     g.add(
         (
@@ -76,7 +76,7 @@ def generate_provenance_uris(output_base_dir, exiobase_version, arborist_version
         )
     )
     g.add((arborist_uri, prov.used, URIRef("http://ontology.bonsai.uno/core")))
-    g.add((arborist_uri, prov.used, bprov["exiobaseDataset_" + exiobase_version]))
+    g.add((arborist_uri, prov.used, bprov["exiobaseDataset_{}".format(exiobase_version)]))
     g.add((arborist_uri, prov.hadPlan, URIRef(bprov.extractionScript)))
     g.add((arborist_uri, prov.wasAssociatedWith, URIRef(bfoaf.bonsai)))
     g.add((arborist_uri, OWL.versionInfo, Literal(arborist_version)))
@@ -85,6 +85,6 @@ def generate_provenance_uris(output_base_dir, exiobase_version, arborist_version
     g.add((plan, RDF.type, prov.Plan))
     g.add((plan, RDF.type, prov.Entity))
     g.add((plan, RDFS.label, Literal("Entity representing the latest version of the Arborist Script")))
-    g.add((plan, prov.hadPrimarySource, URIRef("https://github.com/BONSAMURAIS/arborist/tree/v" + arborist_version)))
+    g.add((plan, prov.hadPrimarySource, URIRef("https://github.com/BONSAMURAIS/arborist/tree/v{}".format(arborist_version))))
 
     write_graph(output_base_dir / "prov", g)

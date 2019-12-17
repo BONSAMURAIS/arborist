@@ -50,7 +50,8 @@ def generate_exiobase_metadata_uris(output_base_dir):
     generate_provenance_uris(
         output_base_dir,
         exiobase_version="3.3.17",
-        arborist_version="0.3"
+        exiobase_update_date="2019-03-12",
+        arborist_version="0.4"
     )
 
     # Exiobase locations are hardcoded to geoname URIs, so just use CSV
@@ -71,8 +72,8 @@ def generate_exiobase_metadata_uris(output_base_dir):
 
     for dct in df.replace({float("nan"): None}).to_dict(orient="records"):
 
-        geoname = URIRef("http://" + dct["URI"])
-        node = URIRef("http://rdf.bonsai.uno/location/exiobase3_3_17#" + dct["name"])
+        geoname = URIRef("http://{}".format(dct["URI"]))
+        node = URIRef("http://rdf.bonsai.uno/location/exiobase3_3_17#{}".format(dct["name"]))
 
         g.add((node, RDF.type, URIRef("http://schema.org/Place")))
         g.add((node, RDFS.label, Literal(dct["label"] or dct["name"])))

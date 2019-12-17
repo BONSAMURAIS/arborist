@@ -53,7 +53,7 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     graph.add((node, RDF.type, NS.dt.Dataset))
     graph.add((node, DC.title, Literal(title)))
     graph.add((node, DC.description, Literal(description)))
-    graph.add((node, FOAF.homepage, URIRef(base_uri + "documentation.html")))
+    graph.add((node, FOAF.homepage, URIRef("{}documentation.html".format(base_uri))))
     graph.add((node, NS.vann.preferredNamespaceUri, URIRef(base_uri)))
     graph.add((node, OWL.versionInfo, Literal(version)))
     today = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -64,7 +64,7 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     # Provenance
     graph.add((node, RDF.type, prov.Collection))
     graph.add((node, prov.wasAttributedTo, bfoaf.bonsai))
-    graph.add((node, prov.wasGeneratedBy, bprov["dataExtractionActivity_" + version.replace(".", "_")]))
+    graph.add((node, prov.wasGeneratedBy, bprov["dataExtractionActivity_{}".format(version.replace(".", "_"))]))
     graph.add((node, prov.generatedAtTime, Literal(today, datatype=XSD.date)))
     graph.add(
         (
