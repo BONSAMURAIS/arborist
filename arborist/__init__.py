@@ -10,6 +10,7 @@ __all__ = (
     "generate_us_epa_uris",
     "generate_all",
     "get_metadata",
+    "generate_provenance_uris",
 )
 __version__ = (0, 3)
 
@@ -27,6 +28,7 @@ from .foaf import generate_foaf_uris
 from .time_uris import generate_time_uris
 from .unit_uris import generate_unit_uris
 from .us_epa_elem_flow_list import generate_us_epa_uris
+from .provenance_uris import generate_provenance_uris
 
 
 def generate_all(base_dir):
@@ -39,3 +41,4 @@ def generate_all(base_dir):
     generate_time_uris(base_dir)
     generate_unit_uris(base_dir)
     generate_us_epa_uris(base_dir)
+    generate_provenance_uris(base_dir)
