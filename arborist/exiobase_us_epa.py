@@ -8,10 +8,14 @@ from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
 from rdflib.namespace import DC, RDFS, OWL
 import pandas
+import pkg_resources
+import os
 
 
 def generate_exiobase_us_epa_uris(output_base_dir):
-    data = pandas.read_csv(data_dir / "exiobase_to_usepa_ghg.csv")
+    file_path = os.path.join(data_dir, "exiobase_to_usepa_ghg.csv")
+    file_handler = pkg_resources.resource_stream(__name__, file_path)
+    data = pandas.read_csv(file_handler)
     output_base_dir = Path(output_base_dir)
 
     nb = Namespace("http://ontology.bonsai.uno/core#")

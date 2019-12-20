@@ -33,6 +33,5 @@ def generate_entsoe_uris(output_base_dir):
         directory_structure=["entsoe"],
         title="ENTSO-E activity types",
         description="ENTSO-E activity types used in BONSAI modelling",
-        author="Chris Mutel",
-        version="0.2",
+        author="Chris Mutel"
     )

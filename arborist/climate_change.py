@@ -13,8 +13,7 @@ def generate_climate_change_uris(output_base_dir):
         directory_structure=["lcia", "climate_change"],
         title="Climate change activity types",
         description="ActivityType instances needed for BONSAI climate change modelling",
-        author="Tiago Morais",
-        version="0.3",
+        author="Tiago Morais"
     )
 
     generate_generic_graph(
@@ -30,6 +29,5 @@ def generate_climate_change_uris(output_base_dir):
         directory_structure=["lcia", "climate_change"],
         title="Climate change activity types",
         description="FlowObject instances needed for BONSAI climate change modelling",
-        author="Tiago Morais",
-        version="0.3",
+        author="Tiago Morais"
     )

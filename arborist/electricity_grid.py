@@ -11,8 +11,7 @@ def generate_electricity_grid_uris(output_base_dir):
         directory_structure=["core", "electricity_grid"],
         title="Electricity grid activity types for BONSAI",
         description="ActivityType instances needed for BONSAI electricity grid modelling",
-        author="Arthur Jakobs",
-        version="0.2",
+        author="Arthur Jakobs"
     )
 
     generate_generic_graph(
@@ -22,6 +21,5 @@ def generate_electricity_grid_uris(output_base_dir):
         directory_structure=["core", "electricity_grid"],
         title="Electricity grid flow objects for BONSAI",
         description="FlowObject instances needed for BONSAI electricity grid modelling",
-        author="Arthur Jakobs",
-        version="0.3",
+        author="Arthur Jakobs"
     )

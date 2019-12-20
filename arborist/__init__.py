@@ -10,13 +10,12 @@ __all__ = (
     "generate_us_epa_uris",
     "generate_all",
     "get_metadata",
-    "generate_provenance_uris",
+    "generate_provenance_uris"
 )
-__version__ = (0, 3)
+VERSION = (0, 4)
+__version__ = ".".join(str(v) for v in VERSION)
 
-from pathlib import Path
-
-data_dir = Path(__file__).parent / "data"
+data_dir = "data"
 
 from .climate_change import generate_climate_change_uris
 from .electricity_grid import generate_electricity_grid_uris

@@ -3,6 +3,7 @@ from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
 from rdflib.namespace import FOAF, SKOS, DC, OWL, XSD
 import datetime
+from . import __version__
 
 
 def generate_foaf_uris(output_base_dir):
@@ -40,7 +41,7 @@ def generate_foaf_uris(output_base_dir):
     g.add((node, DC.modified, Literal(today, datatype=XSD.date)))
     g.add((node, DC.publisher, Literal("bonsai.uno")))
     g.add((node, DC.title, Literal("Organizations")))
-    g.add((node, OWL.versionInfo, Literal("1.0")))
+    g.add((node, OWL.versionInfo, Literal(__version__)))
 
     node = URIRef(bfoaf.bonsai)
     g.add((node, RDF.type, org.Organization))
