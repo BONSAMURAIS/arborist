@@ -27,7 +27,7 @@ def generate_time_uris(output_base_dir):
 
     g = add_common_elements(
         Graph(),
-        base_uri="http://rdf.bonsai.uno/time#",
+        base_uri="http://rdf.bonsai.uno/time",
         title="Years 2010 - 2020",
         description="Complete years 2010 - 2020 for use in BONSAI",
         author="Chris Mutel"

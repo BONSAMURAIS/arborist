@@ -31,8 +31,8 @@ def add_common_elements(graph, base_uri, title, description, author):
 
     """
     # All namespaces needs to end with a #
-    if not (base_uri.endswith("#") or base_uri.endswith("/")):
-        raise ValueError("`base_uri` must end with '/'")
+    if base_uri.endswith("#") or base_uri.endswith("/"):
+        raise ValueError("`base_uri` cannot end with '/' or '#'")
 
     prov = Namespace("http://www.w3.org/ns/prov#")
     bfoaf = Namespace("http://rdf.bonsai.uno/foaf#")
@@ -55,7 +55,7 @@ def add_common_elements(graph, base_uri, title, description, author):
     graph.add((node, DC.title, Literal(title)))
     graph.add((node, DC.description, Literal(description)))
     graph.add((node, FOAF.homepage, URIRef("{}documentation.html".format(base_uri))))
-    graph.add((node, NS.vann.preferredNamespaceUri, URIRef(base_uri)))
+    graph.add((node, NS.vann.preferredNamespaceUri, URIRef("{}#".format(base_uri))))
     graph.add((node, OWL.versionInfo, Literal(__version__)))
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     graph.add((node, DC.modified, Literal(today, datatype=XSD.date)))
@@ -135,7 +135,6 @@ def generate_generic_graph(
         + kind.lower()
         + "/"
         + "/".join(directory_structure)
-        + "#"
     )
 
     g = add_common_elements(
@@ -146,8 +145,8 @@ def generate_generic_graph(
         author=author
     )
 
-    lns = Namespace(base_uri)
-    g.bind(BASE_TYPES[kind], base_uri)
+    lns = Namespace("{}#".format(base_uri))
+    g.bind(BASE_TYPES[kind], lns)
 
     if custom_binds:
         for k, v in custom_binds.items():

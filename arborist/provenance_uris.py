@@ -10,10 +10,11 @@ def generate_provenance_uris(output_base_dir):
     exiobase_version = "3.3.17"
     exiobase_update_date = "2019-03-12"
 
+    bprov_uri = "http://rdf.bonsai.uno/prov"
     prov = Namespace("http://www.w3.org/ns/prov#")
     purl = Namespace("http://purl.org/dc/dcmitype/")
     bfoaf = Namespace("http://rdf.bonsai.uno/foaf#")
-    bprov = Namespace("http://rdf.bonsai.uno/prov#")
+    bprov = Namespace("{}#".format(bprov_uri))
     dtype = Namespace("http://purl.org/dc/dcmitype/")
     vann = Namespace("http://purl.org/vocab/vann/")
 
@@ -31,7 +32,7 @@ def generate_provenance_uris(output_base_dir):
     g.bind("vann", vann)
 
     # Meta information about the Named Graph
-    node = URIRef(bprov)
+    node = URIRef(bprov_uri)
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     g.add((node, RDF.type, dtype.Dataset))
     g.add((node, DC.contributor, Literal("BONSAI team")))

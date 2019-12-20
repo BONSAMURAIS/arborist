@@ -29,7 +29,7 @@ def generate_foaf_uris(output_base_dir):
     g.bind("prov", prov)
     g.bind("bfoaf", bfoaf)
 
-    node = URIRef(bfoaf)
+    node = URIRef("http://rdf.bonsai.uno/foaf")
 
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     g.add((node, RDF.type, dtype.Dataset))
