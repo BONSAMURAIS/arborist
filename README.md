@@ -70,9 +70,10 @@ output
 │       └── exiobase3_3_17.ttl
 ├── time
 │   └── time.ttl
-└── unit
-    └── unit.ttl
-
+|── unit
+|   └── unit.ttl
+└── prov
+    └── prov.ttl
 ```
 
 
@@ -90,13 +91,20 @@ This library has a number of generation functions; you can call them all with:
 The RDF output directory has the following structure:
 
     activitytype
+        core
+        entsoe
+        exiobase3_3_17
         lcia
     flowobject
-        lcia
-        us_epa
+        core
         exiobase3_3_17
-    unit
+        lcia
+        us_epa_elem
     location
+        exiobase3_3_17
+    prov
+    time
+    unit
     foaf
 
 The convention now is that each subdirectory has a `.ttl` file *and* and `.jsonld` file with the **same name** as the directory.
