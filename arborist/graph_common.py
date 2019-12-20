@@ -3,6 +3,7 @@ from pathlib import Path
 from rdflib import Literal, RDF, URIRef, Namespace, Graph
 from rdflib.namespace import DC, RDFS, OWL, FOAF, XSD, SKOS
 import datetime
+from . import __version__
 
 
 class CommonNamespaces:
@@ -17,7 +18,7 @@ class CommonNamespaces:
 NS = CommonNamespaces()
 
 
-def add_common_elements(graph, base_uri, title, description, author, version):
+def add_common_elements(graph, base_uri, title, description, author):
     """Add common graphs binds (abbreviations for longer namespaces) and a ``Dataset`` element.
 
     Input arguments:
@@ -34,8 +35,8 @@ def add_common_elements(graph, base_uri, title, description, author, version):
         raise ValueError("`base_uri` must end with '/'")
 
     prov = Namespace("http://www.w3.org/ns/prov#")
-    bfoaf = Namespace("http://bonsai.uno/foaf#")
-    bprov = Namespace("http://bonsai.uno/prov#")
+    bfoaf = Namespace("http://rdf.bonsai.uno/foaf#")
+    bprov = Namespace("http://rdf.bonsai.uno/prov#")
 
     graph.bind("bont", "http://ontology.bonsai.uno/core#")
     graph.bind("dc", DC)
@@ -55,7 +56,7 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     graph.add((node, DC.description, Literal(description)))
     graph.add((node, FOAF.homepage, URIRef("{}documentation.html".format(base_uri))))
     graph.add((node, NS.vann.preferredNamespaceUri, URIRef(base_uri)))
-    graph.add((node, OWL.versionInfo, Literal(version)))
+    graph.add((node, OWL.versionInfo, Literal(__version__)))
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     graph.add((node, DC.modified, Literal(today, datatype=XSD.date)))
     graph.add((node, DC.publisher, bfoaf.bonsai))
@@ -64,7 +65,7 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     # Provenance
     graph.add((node, RDF.type, prov.Collection))
     graph.add((node, prov.wasAttributedTo, bfoaf.bonsai))
-    graph.add((node, prov.wasGeneratedBy, bprov["dataExtractionActivity_{}".format(version.replace(".", "_"))]))
+    graph.add((node, prov.wasGeneratedBy, bprov["dataExtractionActivity_{}".format(__version__.replace(".", "_"))]))
     graph.add((node, prov.generatedAtTime, Literal(today, datatype=XSD.date)))
     graph.add(
         (
@@ -85,7 +86,6 @@ def generate_generic_graph(
     title,
     description,
     author,
-    version,
     custom_binds=None
 ):
     """Generate a complete ``Turtle`` file describing a specific set of graph metadata.
@@ -99,7 +99,6 @@ def generate_generic_graph(
     * ``title``: String.
     * ``description``: String.
     * ``author``: String.
-    * ``version``: String.
     * ``custom_binds``: TODO
     * ``custom_elements``: A list of custom elements
 
@@ -144,8 +143,7 @@ def generate_generic_graph(
         base_uri=base_uri,
         title=title,
         description=description,
-        author=author,
-        version=version,
+        author=author
     )
 
     lns = Namespace(base_uri)

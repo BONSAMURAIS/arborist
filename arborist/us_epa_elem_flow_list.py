@@ -8,10 +8,15 @@ from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
 from rdflib.namespace import RDFS, OWL
 import pandas
+import pkg_resources
+import os
+from . import __version__
 
 
 def generate_us_epa_uris(output_base_dir):
-    data = pandas.read_csv(data_dir / "USEPA_URI.csv")
+    file_path = os.path.join(data_dir, "USEPA_URI.csv")
+    file_handler = pkg_resources.resource_stream(__name__, file_path)
+    data = pandas.read_csv(file_handler)
     output_base_dir = Path(output_base_dir)
 
     uri = "http://rdf.bonsai.uno/flowobject/us_epa_elem/"
@@ -22,8 +27,7 @@ def generate_us_epa_uris(output_base_dir):
         base_uri=uri,
         title="US EPA Elementary Flow List",
         description="US EPA Elementary Flow List from https://github.com/USEPA/Federal-LCA-Commons-Elementary-Flow-List",
-        author="Tiago Morais",
-        version="0.3 (2019-04-03)",
+        author="Tiago Morais"
     )
     g.bind("brdffo", uri)
 

@@ -2,12 +2,14 @@ from .filesystem import write_graph
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
 from rdflib.namespace import FOAF, SKOS, DC, OWL, XSD, RDFS
 import datetime
+from . import __version__
+from pathlib import Path
 
 
-def generate_provenance_uris(output_base_dir, exiobase_version, exiobase_update_date, arborist_version):
+def generate_provenance_uris(output_base_dir):
+    exiobase_version = "3.3.17"
+    exiobase_update_date = "2019-03-12"
 
-    exiobase_version = exiobase_version.replace(".", "_")
-    arborist_version = arborist_version.replace(".", "_")
     prov = Namespace("http://www.w3.org/ns/prov#")
     purl = Namespace("http://purl.org/dc/dcmitype/")
     bfoaf = Namespace("http://rdf.bonsai.uno/foaf#")
@@ -40,7 +42,7 @@ def generate_provenance_uris(output_base_dir, exiobase_version, exiobase_update_
     g.add((node, DC.modified, Literal(today, datatype=XSD.date)))
     g.add((node, DC.publisher, Literal("bonsai.uno")))
     g.add((node, DC.title, Literal("Provenance information")))
-    g.add((node, OWL.versionInfo, Literal("1.0")))
+    g.add((node, OWL.versionInfo, Literal(__version__)))
 
     # exiobase dataset
     ebd = bprov["exiobaseDataset_{}".format(exiobase_version)]
@@ -64,7 +66,7 @@ def generate_provenance_uris(output_base_dir, exiobase_version, exiobase_update_
     g.add((ebd, prov.hadPrimarySource, URIRef("https://www.exiobase.eu/index.php/data-download/exiobase3hyb")))
 
     # dataExtractionActivity
-    arborist_uri = bprov["dataExtractionActivity_{}".format(arborist_version)]
+    arborist_uri = bprov["dataExtractionActivity_{}".format(__version__.replace(".", "_"))]
     g.add((arborist_uri, RDF.type, prov.Activity))
     g.add(
         (
@@ -79,12 +81,12 @@ def generate_provenance_uris(output_base_dir, exiobase_version, exiobase_update_
     g.add((arborist_uri, prov.used, bprov["exiobaseDataset_{}".format(exiobase_version)]))
     g.add((arborist_uri, prov.hadPlan, URIRef(bprov.extractionScript)))
     g.add((arborist_uri, prov.wasAssociatedWith, URIRef(bfoaf.bonsai)))
-    g.add((arborist_uri, OWL.versionInfo, Literal(arborist_version)))
+    g.add((arborist_uri, OWL.versionInfo, Literal(__version__)))
 
     plan = URIRef(bprov.extractionScript)
     g.add((plan, RDF.type, prov.Plan))
     g.add((plan, RDF.type, prov.Entity))
     g.add((plan, RDFS.label, Literal("Entity representing the latest version of the Arborist Script")))
-    g.add((plan, prov.hadPrimarySource, URIRef("https://github.com/BONSAMURAIS/arborist/tree/v{}".format(arborist_version))))
+    g.add((plan, prov.hadPrimarySource, URIRef("https://github.com/BONSAMURAIS/arborist/tree/v{}".format(__version__.replace(".", "_")))))
 
-    write_graph(output_base_dir / "prov", g)
+    write_graph(Path(output_base_dir) / "prov", g)

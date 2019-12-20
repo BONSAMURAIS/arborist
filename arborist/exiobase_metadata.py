@@ -7,13 +7,17 @@ from pathlib import Path
 from rdflib import Graph, Literal, RDF, URIRef, XSD, OWL
 from rdflib.namespace import RDFS
 import pandas
+import pkg_resources
+import os
 
 
 def generate_exiobase_metadata_uris(output_base_dir):
     output_base_dir = Path(output_base_dir)
 
+    file_path = os.path.join(data_dir, "exiobase_classifications_v_3_3_17.xlsx")
+    file_handler = pkg_resources.resource_stream(__name__, file_path)
     df = pandas.read_excel(
-        data_dir / "exiobase_classifications_v_3_3_17.xlsx",
+        file_handler,
         sheet_name="Activities",
         header=0,
     )
@@ -25,13 +29,12 @@ def generate_exiobase_metadata_uris(output_base_dir):
         directory_structure=["exiobase3_3_17"],
         title="EXIOBASE 3.3.17 activity types",
         description="ActivityType instances needed for BONSAI modelling of EXIOBASE version 3.3.17",
-        author="BONSAI team",
-        version="0.4",
+        author="BONSAI team"
     )
 
     # # TODO: Need to add preferred unit
     df = pandas.read_excel(
-        data_dir / "exiobase_classifications_v_3_3_17.xlsx",
+        file_handler,
         sheet_name="Products_HSUTs",
         header=0,
     )
@@ -43,28 +46,21 @@ def generate_exiobase_metadata_uris(output_base_dir):
         directory_structure=["exiobase3_3_17"],
         title="EXIOBASE 3.3.17 flow objects",
         description="FlowObject instances needed for BONSAI modelling of EXIOBASE version 3.3.17",
-        author="BONSAI team",
-        version="0.4",
-    )
-
-    generate_provenance_uris(
-        output_base_dir,
-        exiobase_version="3.3.17",
-        exiobase_update_date="2019-03-12",
-        arborist_version="0.4"
+        author="BONSAI team"
     )
 
     # Exiobase locations are hardcoded to geoname URIs, so just use CSV
     # created by hand
-    df = pandas.read_csv(data_dir / "exiobase_location_uris.csv", header=0)
+    file_path = os.path.join(data_dir, "exiobase_location_uris.csv")
+    file_handler = pkg_resources.resource_stream(__name__, file_path)
+    df = pandas.read_csv(file_handler, header=0)
 
     g = add_common_elements(
         Graph(),
         "http://rdf.bonsai.uno/location/exiobase3_3_17#",
         "Custom locations for EXIOBASE 3.3",
         "Country groupings used EXIOBASE 3.3.17",
-        "Chris Mutel",
-        "0.4",
+        "Chris Mutel"
     )
     g.bind("gn", "http://sws.geonames.org/")
     g.bind("brdflo", "http://rdf.bonsai.uno/location/exiobase3_3_17#")

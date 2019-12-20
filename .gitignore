@@ -105,3 +105,12 @@ venv.bak/
 
 # Pycharm
 .idea
+
+# Output
+output
+
+# Pipenv
+Pipfile
+
+# Test
+test.py
