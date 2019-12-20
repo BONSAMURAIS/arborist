@@ -54,7 +54,7 @@ def generate_unit_uris(output_base_dir):
         title="Unit definitions used in BONSAI",
         description="Units from ontology-of-units-of-measure used in BONSAI",
         author="Chris Mutel",
-        version="0.3",
+        version="0.4",
     )
     g.bind("om2", "http://www.ontology-of-units-of-measure.org/resource/om-2/")
 

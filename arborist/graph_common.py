@@ -11,7 +11,7 @@ class CommonNamespaces:
         self.owltime = Namespace("https://www.w3.org/TR/owl-time/")
         self.vann = Namespace("http://purl.org/vocab/vann/")
         self.dt = Namespace("http://purl.org/dc/dcmitype/")
-        self.prov = Namespace("http://www.w3.org/ns/prov/")
+        self.prov = Namespace("http://www.w3.org/ns/prov#")
 
 
 NS = CommonNamespaces()
@@ -29,12 +29,13 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     Returns the modified graph.
 
     """
-    if not base_uri.endswith("/"):
+    # All namespaces needs to end with a #
+    if not (base_uri.endswith("#") or base_uri.endswith("/")):
         raise ValueError("`base_uri` must end with '/'")
 
-    prov = Namespace("http://www.w3.org/ns/prov/")
-    bfoaf = Namespace("https://bonsai.uno/foaf/")
-    bprov = Namespace("http://bonsai.uno/prov/")
+    prov = Namespace("http://www.w3.org/ns/prov#")
+    bfoaf = Namespace("http://bonsai.uno/foaf#")
+    bprov = Namespace("http://bonsai.uno/prov#")
 
     graph.bind("bont", "http://ontology.bonsai.uno/core#")
     graph.bind("dc", DC)
@@ -44,15 +45,15 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     graph.bind("skos", SKOS)
     graph.bind("ot", "https://www.w3.org/TR/owl-time/")
     graph.bind("dtype", "http://purl.org/dc/dcmitype/")
-    graph.bind("prov", "http://www.w3.org/ns/prov/")
-    graph.bind("bprov", "http://bonsai.uno/prov/")
-    graph.bind("bfoaf", "https://bonsai.uno/foaf/")
+    graph.bind("prov", prov)
+    graph.bind("bprov", bprov)
+    graph.bind("bfoaf", bfoaf)
 
     node = URIRef(base_uri)
     graph.add((node, RDF.type, NS.dt.Dataset))
     graph.add((node, DC.title, Literal(title)))
     graph.add((node, DC.description, Literal(description)))
-    graph.add((node, FOAF.homepage, URIRef(base_uri + "documentation.html")))
+    graph.add((node, FOAF.homepage, URIRef("{}documentation.html".format(base_uri))))
     graph.add((node, NS.vann.preferredNamespaceUri, URIRef(base_uri)))
     graph.add((node, OWL.versionInfo, Literal(version)))
     today = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -61,9 +62,9 @@ def add_common_elements(graph, base_uri, title, description, author, version):
     graph.add((node, DC.creator, bfoaf.bonsai))
 
     # Provenance
-    graph.add((node, RDF.type, prov.Entity))
+    graph.add((node, RDF.type, prov.Collection))
     graph.add((node, prov.wasAttributedTo, bfoaf.bonsai))
-    graph.add((node, prov.wasGeneratedBy, bprov["dataExtractionActivity_" + version.replace(".", "_")]))
+    graph.add((node, prov.wasGeneratedBy, bprov["dataExtractionActivity_{}".format(version.replace(".", "_"))]))
     graph.add((node, prov.generatedAtTime, Literal(today, datatype=XSD.date)))
     graph.add(
         (
@@ -135,7 +136,7 @@ def generate_generic_graph(
         + kind.lower()
         + "/"
         + "/".join(directory_structure)
-        + "/"
+        + "#"
     )
 
     g = add_common_elements(
