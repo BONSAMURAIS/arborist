@@ -50,7 +50,7 @@ def generate_unit_uris(output_base_dir):
 
     g = add_common_elements(
         Graph(),
-        base_uri="http://rdf.bonsai.uno/unit/",
+        base_uri="http://rdf.bonsai.uno/unit",
         title="Unit definitions used in BONSAI",
         description="Units from ontology-of-units-of-measure used in BONSAI",
         author="Chris Mutel"
