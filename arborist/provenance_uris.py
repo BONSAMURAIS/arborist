@@ -4,11 +4,11 @@ from rdflib.namespace import FOAF, SKOS, DC, OWL, XSD, RDFS
 import datetime
 from . import __version__
 from pathlib import Path
+from.config_parser import get_config_data
 
 
 def generate_provenance_uris(output_base_dir):
     exiobase_version = "3.3.17"
-    exiobase_update_date = "2019-03-12"
 
     bprov_uri = "http://rdf.bonsai.uno/prov"
     prov = Namespace("http://www.w3.org/ns/prov#")
@@ -45,26 +45,27 @@ def generate_provenance_uris(output_base_dir):
     g.add((node, DC.title, Literal("Provenance information")))
     g.add((node, OWL.versionInfo, Literal(__version__)))
 
-    # exiobase dataset
-    ebd = bprov["exiobaseDataset_{}".format(exiobase_version)]
-    g.add((ebd, RDF.type, purl.Dataset))
-    g.add((ebd, RDF.type, prov.Entity))
-    g.add(
-        (
-            ebd,
-            RDFS.label,
-            Literal(
-                "A LCSA dataset created by the EXIOBASE-Consortium, version {}".format(exiobase_version)
-            ),
+    # Datasets in use (From config.json)
+    _, datasets = get_config_data()
+    for dataset in datasets:
+        datasetUri = URIRef(bprov["{}Dataset_{}".format(dataset['name'], dataset['version'])])
+        g.add((datasetUri, RDF.type, purl.Dataset))
+        g.add((datasetUri, RDF.type, prov.Entity))
+        g.add(
+            (
+                datasetUri,
+                RDFS.label,
+                Literal(
+                    dataset['label']
+                ),
+            )
         )
-    )
-    today = datetime.datetime.now().strftime("%Y-%m-%d")
-    g.add((ebd, OWL.versionInfo, Literal("3.3.17")))
-    g.add((ebd, DC.term("license"), URIRef("https://www.exiobase.eu/index.php/terms-of-use")))
-    g.add((ebd, DC.term("date"), Literal(exiobase_update_date, datatype=XSD.date)))
-    g.add((ebd, prov.wasAttributedTo, URIRef(bfoaf.exiobase_consortium)))
-    g.add((ebd, DC.term("rights"), Literal("Copyright © 2015 - EXIOBASE Consortium")))
-    g.add((ebd, prov.hadPrimarySource, URIRef("https://www.exiobase.eu/index.php/data-download/exiobase3hyb")))
+        g.add((datasetUri, OWL.versionInfo, Literal(dataset['version'].replace('_', '.'))))
+        g.add((datasetUri, DC.term("license"), URIRef(dataset['license'])))
+        g.add((datasetUri, DC.term("date"), Literal(dataset['update_date'], datatype=XSD.date)))
+        g.add((datasetUri, prov.wasAttributedTo, URIRef(bfoaf[dataset['provider']])))
+        g.add((datasetUri, DC.term("rights"), Literal(dataset['rights'])))
+        g.add((datasetUri, prov.hadPrimarySource, URIRef(dataset['download_uri'])))
 
     # dataExtractionActivity
     arborist_uri = bprov["dataExtractionActivity_{}".format(__version__.replace(".", "_"))]
@@ -79,7 +80,11 @@ def generate_provenance_uris(output_base_dir):
         )
     )
     g.add((arborist_uri, prov.used, URIRef("http://ontology.bonsai.uno/core")))
-    g.add((arborist_uri, prov.used, bprov["exiobaseDataset_{}".format(exiobase_version)]))
+
+    # Add usage association to all datasets
+    for dataset in datasets:
+        g.add((arborist_uri, prov.used, bprov["{}Dataset_{}".format(dataset['name'], dataset['version'])]))
+
     g.add((arborist_uri, prov.hadPlan, URIRef(bprov.extractionScript)))
     g.add((arborist_uri, prov.wasAssociatedWith, URIRef(bfoaf.bonsai)))
     g.add((arborist_uri, OWL.versionInfo, Literal(__version__)))

@@ -4,6 +4,7 @@ from rdflib import Graph, Literal, RDF, URIRef, Namespace
 from rdflib.namespace import FOAF, SKOS, DC, OWL, XSD
 import datetime
 from . import __version__
+from .config_parser import get_config_data
 
 
 def generate_foaf_uris(output_base_dir):
@@ -60,8 +61,22 @@ def generate_foaf_uris(output_base_dir):
     g.add((node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q2323664")))
     g.add((node, FOAF.interest, URIRef("https://www.wikidata.org/wiki/Q18692990")))
 
-    # Exiobase_Consortium
-    ec = URIRef(bfoaf.exiobase_consortium)
+    # Dataset providers, comes from config.json file
+    providers, _ = get_config_data()
+    for provider in providers:
+        providerUri = URIRef(bfoaf[provider['provider']])
+        g.add((providerUri, RDF.type, org.Organization))
+        g.add((providerUri, RDF.type, prov.Agent))
+        g.add(
+            (
+                providerUri,
+                DC.description,
+                Literal(provider['label'])
+            )
+        )
+        g.add((providerUri, FOAF.homepage, URIRef(provider['homepage'])))
+
+    ec = URIRef(bfoaf.exiobase_consortium_test)
     g.add((ec, RDF.type, org.Organization))
     g.add((ec, RDF.type, prov.Agent))
     g.add(
