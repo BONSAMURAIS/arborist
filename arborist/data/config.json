@@ -21,7 +21,6 @@
         ],
 
         "datasets_required_fields": [
-                "provider",
                 "version",
                 "name",
                 "update_date",
@@ -35,29 +34,18 @@
                 {
                         "provider": "Exiobase Consortium",
                         "label": "The EXIOBASE consortium consists of NTNU, TNO, SERI, Universiteit Leiden, WU, and 2.-0 LCA Consultant",
-                        "homepage": "https://www.exiobase.eu/"
-                }
-        ],
-        "datasets": [
-                {
-                        "provider": "Exiobase Consortium",
-                        "version": "3.3.17",
-                        "name": "Exiobase",
-                        "update_date": "2019-03-12",
-                        "label": "A LCSA dataset created by the EXIOBASE-Consortium",
-                        "license": "https://www.exiobase.eu/index.php/terms-of-use",
-                        "rights": "Copyright © 2015 - EXIOBASE Consortium",
-                        "download_uri": "https://www.exiobase.eu/index.php/data-download/exiobase3hyb"
-                },
-                {
-                        "provider": "Exiobase Consortium",
-                        "version": "4.5.6",
-                        "name": "Sudobase",
-                        "update_date": "2020-01-03",
-                        "label": "A LCSA dataset created by the EXIOBASE-Consortium",
-                        "license": "https://www.exiobase.eu/index.php/terms-of-use",
-                        "rights": "Copyright © 2015 - EXIOBASE Consortium",
-                        "download_uri": "https://www.exiobase.eu/index.php/data-download/exiobase3hyb"
+                        "homepage": "https://www.exiobase.eu/",
+                        "datasets": [
+                                {
+                                        "version": "3.3.17",
+                                        "name": "Exiobase",
+                                        "update_date": "2019-03-12",
+                                        "label": "A LCSA dataset created by the EXIOBASE-Consortium",
+                                        "license": "https://www.exiobase.eu/index.php/terms-of-use",
+                                        "rights": "Copyright © 2015 - EXIOBASE Consortium",
+                                        "download_uri": "https://www.exiobase.eu/index.php/data-download/exiobase3hyb"
+                                }
+                        ]
                 }
         ]
 }

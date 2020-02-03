@@ -49,7 +49,6 @@ def generate_provenance_uris(output_base_dir):
     _, datasets = get_config_data()
     for dataset in datasets:
         datasetUri = URIRef(bprov["{}Dataset_{}".format(dataset['name'], dataset['version'])])
-        g.add((datasetUri, RDF.type, purl.Dataset))
         g.add((datasetUri, RDF.type, prov.Entity))
         g.add(
             (
@@ -67,27 +66,29 @@ def generate_provenance_uris(output_base_dir):
         g.add((datasetUri, DC.term("rights"), Literal(dataset['rights'])))
         g.add((datasetUri, prov.hadPrimarySource, URIRef(dataset['download_uri'])))
 
-    # dataExtractionActivity
-    arborist_uri = bprov["dataExtractionActivity_{}".format(__version__.replace(".", "_"))]
-    g.add((arborist_uri, RDF.type, prov.Activity))
-    g.add(
-        (
-            arborist_uri,
-            RDFS.label,
-            Literal(
-                "Activity to create instances of flowObjects, activityTypes and Locations"
-            ),
-        )
-    )
-    g.add((arborist_uri, prov.used, URIRef("http://ontology.bonsai.uno/core")))
-
-    # Add usage association to all datasets
+    # dataExtractionActivities
+    # For each dataset, we need a new extractionActivity, this is to keep perfect lineage of data origin
     for dataset in datasets:
+        arborist_uri = bprov["dataExtractionActivity_{}_{}_{}".format(dataset['provider'], dataset['name'], dataset['version'])]
+        g.add((arborist_uri, RDF.type, prov.Activity))
+        g.add(
+            (
+                arborist_uri,
+                RDFS.label,
+                Literal(
+                    "Activity to create instances of flowObjects, activityTypes "
+                    "and Locations for dataset {}".format(dataset['name'])
+                ),
+            )
+        )
+        g.add((arborist_uri, prov.used, URIRef("http://ontology.bonsai.uno/core")))
+
+        # Add usage association to
         g.add((arborist_uri, prov.used, bprov["{}Dataset_{}".format(dataset['name'], dataset['version'])]))
 
-    g.add((arborist_uri, prov.hadPlan, URIRef(bprov.extractionScript)))
-    g.add((arborist_uri, prov.wasAssociatedWith, URIRef(bfoaf.bonsai)))
-    g.add((arborist_uri, OWL.versionInfo, Literal(__version__)))
+        g.add((arborist_uri, prov.hadPlan, URIRef(bprov.extractionScript)))
+        g.add((arborist_uri, prov.wasAssociatedWith, URIRef(bfoaf.bonsai)))
+        g.add((arborist_uri, OWL.versionInfo, Literal(__version__)))
 
     plan = URIRef(bprov.extractionScript)
     g.add((plan, RDF.type, prov.Plan))

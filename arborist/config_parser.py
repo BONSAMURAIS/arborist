@@ -11,20 +11,38 @@ def get_config_data():
         data = json.load(json_file)
         for provider in data['providers']:
             providers.append(provider)
-        for dataset in data['datasets']:
-            datasets.append(dataset)
+            for dataset in provider['datasets']:
+                dataset['provider'] = provider['provider']
+                datasets.append(dataset)
         for requiredField in data['providers_required_fields']:
             providersRequiredFields.add(requiredField)
         for requiredField in data['datasets_required_fields']:
             datasetsRequiredFields.add(requiredField)
 
     # Each provider must have all required fields
+    providerNames = []
     for provider in providers:
         providerKeys = set([key for key in provider])
         if not providersRequiredFields.issubset(providerKeys):
             exit("{} is a required field for providers, but have not been supplied for all providers\n"
                  "Check config.json and try again\n"
                  "Exiting".format(', '.join(list(providersRequiredFields - providerKeys))))
+
+        # All provider names must be distinct
+        if provider['provider'] in providerNames:
+            exit("All providers must have different names, but the provider {} "
+                 "is used multiple times".format(provider['provider']))
+        else:
+            providerNames.append(provider['provider'])
+
+        # All datasets from the same provider must have distinct names
+        datasetNames = []
+        for dataset in provider['datasets']:
+            if dataset['name'] in datasetNames:
+                exit("All datasets for the same provider must have different names, but the name {} "
+                     "is used for multiple datasets".format(dataset['name']))
+            else:
+                datasetNames.append(dataset['name'])
 
     # Each dataset must have all required fields
     for dataset in datasets:
@@ -33,6 +51,7 @@ def get_config_data():
             exit("{} is a required field for datasets, but have not been supplied for all datasets\n"
                  "Check config.json and try again\n"
                  "Exiting".format(', '.join(list(datasetsRequiredFields - datasetKeys))))
+
 
     # Each dataset must have a provider
     providersSetA = set([dataset['provider'] for dataset in datasets])
