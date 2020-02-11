@@ -2,6 +2,7 @@ from .filesystem import write_graph
 from pathlib import Path
 from rdflib import Literal, RDF, URIRef, Namespace, Graph
 from rdflib.namespace import DC, RDFS, OWL, FOAF, XSD, SKOS
+from.config_parser import does_provider_dataset_combi_exist
 import datetime
 from . import __version__
 
@@ -18,7 +19,7 @@ class CommonNamespaces:
 NS = CommonNamespaces()
 
 
-def add_common_elements(graph, base_uri, title, description, author):
+def add_common_elements(graph, base_uri, title, description, author, provider=None, dataset=None):
     """Add common graphs binds (abbreviations for longer namespaces) and a ``Dataset`` element.
 
     Input arguments:
@@ -63,17 +64,20 @@ def add_common_elements(graph, base_uri, title, description, author):
     graph.add((node, DC.creator, bfoaf.bonsai))
 
     # Provenance
-    graph.add((node, RDF.type, prov.Collection))
-    graph.add((node, prov.wasAttributedTo, bfoaf.bonsai))
-    graph.add((node, prov.wasGeneratedBy, bprov["dataExtractionActivity_{}".format(__version__.replace(".", "_"))]))
-    graph.add((node, prov.generatedAtTime, Literal(today, datatype=XSD.date)))
-    graph.add(
-        (
-            node,
-            URIRef("http://creativecommons.org/ns#license"),
-            URIRef("http://creativecommons.org/licenses/by/3.0/"),
-        )
-    )
+    if provider is not None and dataset is not None:
+        datasetInfo = does_provider_dataset_combi_exist(provider, dataset)
+        if datasetInfo is not None:
+            graph.add((node, RDF.type, prov.Collection))
+            graph.add((node, prov.wasAttributedTo, bfoaf.bonsai))
+            graph.add((node, prov.wasGeneratedBy, bprov["dataExtractionActivity_{}_{}_{}".format(datasetInfo['provider'], datasetInfo['name'], datasetInfo['version'])]))
+            graph.add((node, prov.generatedAtTime, Literal(today, datatype=XSD.date)))
+            graph.add(
+                (
+                    node,
+                    URIRef("http://creativecommons.org/ns#license"),
+                    URIRef("http://creativecommons.org/licenses/by/3.0/"),
+                )
+            )
 
     return graph
 
@@ -86,6 +90,8 @@ def generate_generic_graph(
     title,
     description,
     author,
+    provider=None,
+    dataset=None,
     custom_binds=None
 ):
     """Generate a complete ``Turtle`` file describing a specific set of graph metadata.
@@ -99,6 +105,8 @@ def generate_generic_graph(
     * ``title``: String.
     * ``description``: String.
     * ``author``: String.
+    * ``provider``: String - a provider from the config file
+    * ``dataset``: String - a dataset from the config file
     * ``custom_binds``: TODO
     * ``custom_elements``: A list of custom elements
 
@@ -142,7 +150,9 @@ def generate_generic_graph(
         base_uri=base_uri,
         title=title,
         description=description,
-        author=author
+        author=author,
+        provider=provider,
+        dataset=dataset
     )
 
     lns = Namespace("{}#".format(base_uri))

@@ -1,17 +1,19 @@
 {
-        "_providers_explanation": {
+        "_Data_explanation": {
                 "_provider": "Name of the data provider",
                 "_label": "Label for the provider",
-                "_homepage": "URL of provider homepage (optional)"
-        },
-        "_datasets_explanation": {
-                "_version": "Version of the dataset",
-                "_update_date": "Date of the latest dataset update",
-                "_label": "Label for the dataset",
-                "_licence": "URL to dataset licence",
-                "_rights": "A rights statement",
-                "_download_uri": "URI to a place where the dataset can be downloaded",
-                "_provider": "The name of the dataset provider (Must match a provier name)"
+                "_homepage": "URL of provider homepage (optional)",
+                "_datasets": [
+                        {
+                                "_version": "Version of the dataset",
+                                "_name": "Name of the dataset",
+                                "_update_date": "Date of the latest dataset update",
+                                "_label": "Label for the dataset",
+                                "_licence": "URL to dataset licence",
+                                "_rights": "A rights statement",
+                                "_download_uri": "URI to a place where the dataset can be downloaded"
+                        }
+                ]
         },
 
         "providers_required_fields": [

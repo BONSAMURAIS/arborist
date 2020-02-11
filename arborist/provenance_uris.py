@@ -8,8 +8,6 @@ from.config_parser import get_config_data
 
 
 def generate_provenance_uris(output_base_dir):
-    exiobase_version = "3.3.17"
-
     bprov_uri = "http://rdf.bonsai.uno/prov"
     prov = Namespace("http://www.w3.org/ns/prov#")
     purl = Namespace("http://purl.org/dc/dcmitype/")

@@ -69,6 +69,14 @@ def get_config_data():
     return providers, datasets
 
 
+def does_provider_dataset_combi_exist(prov, data):
+    _, datasets = get_config_data()
+    for dataset in datasets:
+        if dataset['name'] == data.lower().replace(' ', '_') and dataset['provider'] == prov.lower().replace(' ', '_'):
+            return dataset
+    return None
+
+
 def format_datasets(datasets):
     formattedDatasets = []
     for dataset in datasets:

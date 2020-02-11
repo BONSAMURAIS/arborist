@@ -29,7 +29,9 @@ def generate_exiobase_metadata_uris(output_base_dir):
         directory_structure=["exiobase3_3_17"],
         title="EXIOBASE 3.3.17 activity types",
         description="ActivityType instances needed for BONSAI modelling of EXIOBASE version 3.3.17",
-        author="BONSAI team"
+        author="BONSAI team",
+        provider="Exiobase Consortium",
+        dataset="Exiobase"
     )
 
     # # TODO: Need to add preferred unit
@@ -46,7 +48,9 @@ def generate_exiobase_metadata_uris(output_base_dir):
         directory_structure=["exiobase3_3_17"],
         title="EXIOBASE 3.3.17 flow objects",
         description="FlowObject instances needed for BONSAI modelling of EXIOBASE version 3.3.17",
-        author="BONSAI team"
+        author="BONSAI team",
+        provider="Exiobase Consortium",
+        dataset="Exiobase"
     )
 
     # Exiobase locations are hardcoded to geoname URIs, so just use CSV
