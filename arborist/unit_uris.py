@@ -17,6 +17,21 @@ def generate_unit_uris(output_base_dir):
             "http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit",
         ),
         (
+            "megagram",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/megagram",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit",
+        ),
+        (
+            "gigagram",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/gigagram",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit",
+        ),
+        (
+            "teragram",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/teragram",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit",
+        ),
+        (
             "megajoule",
             "http://www.ontology-of-units-of-measure.org/resource/om-2/megajoule",
             "http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit",
@@ -45,6 +60,11 @@ def generate_unit_uris(output_base_dir):
             "cubic zettameter",
             "http://www.ontology-of-units-of-measure.org/resource/om-2/cubicZettametre",
             "http://www.ontology-of-units-of-measure.org/resource/om-2/CubicPrefixedMetre"
+        ),
+        (
+            "gigabecquerel",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/gigabecquerel",
+            "http://www.ontology-of-units-of-measure.org/resource/om-2/PrefixedUnit",
         )
     ]
 
