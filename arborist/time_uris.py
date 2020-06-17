@@ -341,7 +341,10 @@ def generate_time_uris(output_base_dir):
     )
 
     BRDFTIME = Namespace("http://rdf.bonsai.uno/time#")
+    PROV = Namespace("http://www.w3.org/ns/prov#")
+    time_node = URIRef("http://rdf.bonsai.uno/time")
     g.bind("brdftime", BRDFTIME)
+    g.bind("prov", PROV)
 
     oneyear = BRDFTIME.oneyearlong
     g.add((oneyear, RDF.type, owltime.DurationDescription))
@@ -389,6 +392,9 @@ def generate_time_uris(output_base_dir):
                 URIRef("http://reference.data.gov.uk/doc/year/{}".format(year)),
             )
         )
+
+        # Adding Provenance
+        g.add((time_node, PROV.hadMember, node))
 
     for period in time_periods:
         start, end = period.split("-")

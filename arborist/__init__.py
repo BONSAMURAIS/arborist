@@ -12,7 +12,7 @@ __all__ = (
     "get_metadata",
     "generate_provenance_uris"
 )
-VERSION = (0, 4)
+VERSION = (0, 5)
 __version__ = ".".join(str(v) for v in VERSION)
 
 data_dir = "data"

@@ -58,7 +58,6 @@ def generate_provenance_uris(output_base_dir):
             ),
         )
     )
-    today = datetime.datetime.now().strftime("%Y-%m-%d")
     g.add((ebd, OWL.versionInfo, Literal("3.3.17")))
     g.add((ebd, DC.term("license"), URIRef("https://www.exiobase.eu/index.php/terms-of-use")))
     g.add((ebd, DC.term("date"), Literal(exiobase_update_date, datatype=XSD.date)))
@@ -90,4 +89,4 @@ def generate_provenance_uris(output_base_dir):
     g.add((plan, RDFS.label, Literal("Entity representing the latest version of the Arborist Script")))
     g.add((plan, prov.hadPrimarySource, URIRef("https://github.com/BONSAMURAIS/arborist/tree/v{}".format(__version__.replace(".", "_")))))
 
-    write_graph(Path(output_base_dir) / "prov", g)
+    write_graph(Path(output_base_dir) / "prov" / "exiobase3_3_17", g)

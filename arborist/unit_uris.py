@@ -1,7 +1,7 @@
 from .filesystem import write_graph
 from .graph_common import add_common_elements
 from pathlib import Path
-from rdflib import Graph, Literal, RDF, URIRef
+from rdflib import Graph, Literal, RDF, URIRef, Namespace
 from rdflib.namespace import RDFS
 
 
@@ -75,11 +75,18 @@ def generate_unit_uris(output_base_dir):
         description="Units from ontology-of-units-of-measure used in BONSAI",
         author="Chris Mutel"
     )
+
+    unit_node = URIRef("http://rdf.bonsai.uno/unit")
+    PROV = Namespace("http://www.w3.org/ns/prov#")
+    g.bind("prov", PROV)
     g.bind("om2", "http://www.ontology-of-units-of-measure.org/resource/om-2/")
 
     for label, uri, kind in units:
         node = URIRef(uri)
         g.add((node, RDF.type, URIRef(kind)))
         g.add((node, RDFS.label, Literal(label)))
+
+        # Add Provenance
+        g.add((unit_node, PROV.hadMember, node))
 
     write_graph(output_base_dir / "unit", g)
