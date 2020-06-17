@@ -73,4 +73,4 @@ def generate_foaf_uris(output_base_dir):
     )
     g.add((ec, FOAF.homepage, URIRef("https://www.exiobase.eu/")))
 
-    write_graph(output_base_dir / "foaf", g)
+    write_graph(output_base_dir / "foaf" / "exiobase3_3_17", g)

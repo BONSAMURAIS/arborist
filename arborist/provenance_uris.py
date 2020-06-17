@@ -89,4 +89,4 @@ def generate_provenance_uris(output_base_dir):
     g.add((plan, RDFS.label, Literal("Entity representing the latest version of the Arborist Script")))
     g.add((plan, prov.hadPrimarySource, URIRef("https://github.com/BONSAMURAIS/arborist/tree/v{}".format(__version__.replace(".", "_")))))
 
-    write_graph(Path(output_base_dir) / "prov", g)
+    write_graph(Path(output_base_dir) / "prov" / "exiobase3_3_17", g)
