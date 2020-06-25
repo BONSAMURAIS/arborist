@@ -38,11 +38,19 @@ def generate_exiobase_metadata_uris(output_base_dir):
         sheet_name="Products_HSUTs",
         header=0,
     )
+    flowObjects1 = set(zip(df["Product name"], df["product code 2"]))
+
+    df2 = pandas.read_excel(
+        file_handler,
+        sheet_name="Emissions",
+        header=0,
+    )
+    flowObjects2 = set(zip(df2["Emission name"], df2["Label"]))
 
     generate_generic_graph(
         output_base_dir,
         kind="FlowObject",
-        data=sorted(set(zip(df["Product name"], df["product code 2"]))),
+        data=sorted(flowObjects1.union(flowObjects2)),
         directory_structure=["exiobase3_3_17"],
         title="EXIOBASE 3.3.17 flow objects",
         description="FlowObject instances needed for BONSAI modelling of EXIOBASE version 3.3.17",

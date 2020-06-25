@@ -14,7 +14,7 @@ def generate_foaf_uris(output_base_dir):
     org = Namespace("https://www.w3.org/TR/vocab-org/")
     prov = Namespace("http://www.w3.org/ns/prov#")
     purl = Namespace("http://purl.org/dc/dcmitype/")
-    bfoaf = Namespace("http://rdf.bonsai.uno/foaf#")
+    bfoaf = Namespace("http://rdf.bonsai.uno/foaf/exiobase3_3_17#")
     dtype = Namespace("http://purl.org/dc/dcmitype/")
     vann = Namespace("http://purl.org/vocab/vann/")
 
@@ -29,7 +29,7 @@ def generate_foaf_uris(output_base_dir):
     g.bind("prov", prov)
     g.bind("bfoaf", bfoaf)
 
-    node = URIRef("http://rdf.bonsai.uno/foaf")
+    node = URIRef("http://rdf.bonsai.uno/foaf/exiobase3_3_17")
 
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     g.add((node, RDF.type, dtype.Dataset))

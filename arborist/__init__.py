@@ -10,7 +10,8 @@ __all__ = (
     "generate_us_epa_uris",
     "generate_all",
     "get_metadata",
-    "generate_provenance_uris"
+    "generate_provenance_uris",
+    "generate_emissions"
 )
 VERSION = (0, 5)
 __version__ = ".".join(str(v) for v in VERSION)
@@ -28,9 +29,11 @@ from .time_uris import generate_time_uris
 from .unit_uris import generate_unit_uris
 from .us_epa_elem_flow_list import generate_us_epa_uris
 from .provenance_uris import generate_provenance_uris
+from .extract_emissions import generate_emissions
 
 
 def generate_all(base_dir):
+    #generate_emissions(base_dir)  # Requires the presence of exiobase extension table
     generate_climate_change_uris(base_dir)
     generate_electricity_grid_uris(base_dir)
     generate_entsoe_uris(base_dir)

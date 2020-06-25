@@ -10,10 +10,10 @@ def generate_provenance_uris(output_base_dir):
     exiobase_version = "3.3.17"
     exiobase_update_date = "2019-03-12"
 
-    bprov_uri = "http://rdf.bonsai.uno/prov"
+    bprov_uri = "http://rdf.bonsai.uno/prov/exiobase3_3_17"
     prov = Namespace("http://www.w3.org/ns/prov#")
     purl = Namespace("http://purl.org/dc/dcmitype/")
-    bfoaf = Namespace("http://rdf.bonsai.uno/foaf#")
+    bfoaf = Namespace("http://rdf.bonsai.uno/foaf/exiobase3_3_17#")
     bprov = Namespace("{}#".format(bprov_uri))
     dtype = Namespace("http://purl.org/dc/dcmitype/")
     vann = Namespace("http://purl.org/vocab/vann/")
