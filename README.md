@@ -76,6 +76,11 @@ output
     └── prov.ttl
 ```
 
+#### Emission flows
+The library can also be used to extract emission flows from the exiobase extension table.
+To do this, first add the file `exiobase_classifications_v_3_3_17.xlsx` to the data folder,
+and outcomment `generate_emissions(base_dir)` in the `__init__.py` file.
+Now run the library as a cli tool.
 
 ### As a library
 
