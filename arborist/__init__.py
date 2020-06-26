@@ -33,7 +33,7 @@ from .extract_emissions import generate_emissions
 
 
 def generate_all(base_dir):
-    #generate_emissions(base_dir)  # Requires the presence of exiobase extension table
+    generate_emissions(base_dir)
     generate_climate_change_uris(base_dir)
     generate_electricity_grid_uris(base_dir)
     generate_entsoe_uris(base_dir)

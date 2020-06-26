@@ -1,5 +1,7 @@
 import os
+import json
 import ntpath
+import warnings
 import pkg_resources
 from pathlib import Path
 
@@ -176,4 +178,14 @@ def emissions(base_dir, sheetnum = 6):
 
 
 def generate_emissions(base_dir):
-    emissions(base_dir)
+    config_filename = "config.json"
+    file_path = os.path.join(data_dir, config_filename)
+    file_handler = pkg_resources.resource_stream(__name__, file_path)
+
+    data = json.load(file_handler)
+
+    if data['extract_exiobase_emissions'] is True:
+        try:
+            emissions(base_dir)
+        except:
+            warnings.warn("Exiobase HSUT extensions file must be in data folder to extract emission flows")
