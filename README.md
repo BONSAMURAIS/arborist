@@ -81,6 +81,11 @@ The library can also be used to extract emission flows from the exiobase extensi
 To do this, first download and insert `MR_HSUT_2011_v3_3_17_extensions.xlsb` into the /data folder, then set `"extract_exiobase_emissions": true` in `config.json`.
 The exiobase extensions table can be downloaded from this url: [www.exiobase.eu](https://www.exiobase.eu/).
 
+
+#### Configuration
+The package provides a `Config.json` file which enables the user to choose what graphs to extract. 
+The value `True` enables the extraction of the specified graph, whereas the value `False` disables the creation of the specified graph.
+
 ### As a library
 
 ### Generation of URIs
