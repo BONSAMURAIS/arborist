@@ -1,10 +1,9 @@
 from . import data_dir
 from .filesystem import write_graph
 from .graph_common import add_common_elements, generate_generic_graph
-from .provenance_uris import generate_provenance_uris
 from .graph_common import NS
 from pathlib import Path
-from rdflib import Graph, Literal, RDF, URIRef, XSD, OWL
+from rdflib import Graph, Literal, RDF, URIRef, OWL
 from rdflib.namespace import RDFS
 import pandas
 import pkg_resources
@@ -47,10 +46,17 @@ def generate_exiobase_metadata_uris(output_base_dir):
     )
     flowObjects2 = set(zip(df2["Emission name"], df2["Label"]))
 
+    df3 = pandas.read_excel(
+        file_handler,
+        sheet_name="Aggregate_flow_objects",
+        header=0,
+    )
+    flowObjects3 = set(zip(df3["aggregate_product_name"], df3["aggregate_product_code"]))
+
     generate_generic_graph(
         output_base_dir,
         kind="FlowObject",
-        data=sorted(flowObjects1.union(flowObjects2)),
+        data=sorted(flowObjects1.union(flowObjects2, flowObjects3)),
         directory_structure=["exiobase3_3_17"],
         title="EXIOBASE 3.3.17 flow objects",
         description="FlowObject instances needed for BONSAI modelling of EXIOBASE version 3.3.17",

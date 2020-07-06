@@ -1,7 +1,5 @@
 import os
-import json
 import ntpath
-import warnings
 import pkg_resources
 from pathlib import Path
 
@@ -9,7 +7,7 @@ import pandas
 import pandas as pd
 from pyxlsb import open_workbook as open_xlsb
 from rdflib import Graph, Namespace, URIRef, Literal
-from rdflib.namespace import DCTERMS, FOAF, XSD, OWL, RDFS, RDF, SKOS
+from rdflib.namespace import XSD, RDFS, RDF
 
 from . import data_dir
 from .filesystem import write_graph
@@ -84,6 +82,10 @@ def emissions(base_dir, sheetnum = 6):
     output_base_dir = Path(base_dir)
 
     xlsb = "MR_HSUT_2011_v3_3_17_extensions.xlsb"
+    if not os.path.exists(Path(data_dir, xlsb)):
+        print("Please add file {} to directory {}".format(xlsb, data_dir))
+        exit(0)
+
     file_path = os.path.join(data_dir, xlsb)
     file_handler = pkg_resources.resource_stream(__name__, file_path)
 
@@ -97,7 +99,12 @@ def emissions(base_dir, sheetnum = 6):
     csvDF = pd.DataFrame(csvArr)
 
     # Get emission codes from exiobase classifications
-    file_path = os.path.join(data_dir, "exiobase_classifications_v_3_3_17.xlsx")
+    extensions = "exiobase_classifications_v_3_3_17.xlsx"
+    if not os.path.exists(Path(data_dir, extensions)):
+        print("Please add file {} to directory {}".format(extensions, data_dir))
+        exit(0)
+
+    file_path = os.path.join(data_dir, extensions)
     file_handler = pkg_resources.resource_stream(__name__, file_path)
     df2 = pandas.read_excel(
         file_handler,
@@ -178,14 +185,4 @@ def emissions(base_dir, sheetnum = 6):
 
 
 def generate_emissions(base_dir):
-    config_filename = "config.json"
-    file_path = os.path.join(data_dir, config_filename)
-    file_handler = pkg_resources.resource_stream(__name__, file_path)
-
-    data = json.load(file_handler)
-
-    if data['extract_exiobase_emissions'] is True:
-        try:
-            emissions(base_dir)
-        except:
-            warnings.warn("Exiobase HSUT extensions file must be in data folder to extract emission flows")
+    emissions(base_dir)

@@ -1,0 +1,13 @@
+{
+  "extract_exiobase_emissions": false,
+  "extract_climate_change": true,
+  "extract_electricity_grid": true,
+  "extract_entsoe": true,
+  "extract_exiobase_metadata": true,
+  "extract_exiobase_us_epa": true,
+  "extract_foaf": true,
+  "extract_time": true,
+  "extract_unit": true,
+  "extract_us_epa": true,
+  "extract_provenance": true
+}
