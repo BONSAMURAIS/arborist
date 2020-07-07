@@ -35,8 +35,8 @@ def add_common_elements(graph, base_uri, title, description, author):
         raise ValueError("`base_uri` cannot end with '/' or '#'")
 
     prov = Namespace("http://www.w3.org/ns/prov#")
-    bfoaf = Namespace("http://rdf.bonsai.uno/foaf#")
-    bprov = Namespace("http://rdf.bonsai.uno/prov#")
+    bfoaf = Namespace("http://rdf.bonsai.uno/foaf/exiobase3_3_17#")
+    bprov = Namespace("http://rdf.bonsai.uno/prov/exiobase3_3_17#")
 
     graph.bind("bont", "http://ontology.bonsai.uno/core#")
     graph.bind("dc", DC)
