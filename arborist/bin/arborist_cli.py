@@ -4,6 +4,7 @@
 
 Usage:
   arborist-cli regenerate <dirpath>
+  arborist-cli regenerate <dirpath> -i <input>
 
 Options:
   -h --help     Show this screen.
@@ -18,7 +19,7 @@ import sys
 def main():
     try:
         args = docopt(__doc__, version="0.2")
-        generate_all(args["<dirpath>"])
+        generate_all(args["<dirpath>"], args["<input>"])
     except KeyboardInterrupt:
         print("Terminating CLI")
         sys.exit(1)
