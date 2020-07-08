@@ -78,9 +78,11 @@ output
 
 #### Emission flows
 The library can also be used to extract emission flows from the exiobase extension table.
-To do this, first download and insert `MR_HSUT_2011_v3_3_17_extensions.xlsb` into the /data folder, then set `"extract_exiobase_emissions": true` in `config.json`.
+To do this, first download `MR_HSUT_2011_v3_3_17_extensions.xlsb` into a input/ folder, then set `"extract_exiobase_emissions": true` in `config.json`.
 The exiobase extensions table can be downloaded from this url: [www.exiobase.eu](https://www.exiobase.eu/).
 
+Using the cli tool to extract emissions can be done from the terminal with the `-i input/dir` argument, such as:
+`arborist-cli regenerate output -i input/`.
 
 #### Configuration
 The package provides a `Config.json` file which enables the user to choose what graphs to extract. 

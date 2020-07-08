@@ -28,7 +28,7 @@ def setup_empty_graph():
     BRDFLO = Namespace("http://rdf.bonsai.uno/location/exiobase3_3_17#")
     BRDFTIME = Namespace("http://rdf.bonsai.uno/time#")
     BRDFFAT = Namespace("http://rdf.bonsai.uno/activitytype/exiobase3_3_17#")
-    BRDFFOAF = Namespace("http://rdf.bonsai.uno/foaf/exiobase3_3_17#")
+    BRDFFOAF = Namespace("http://rdf.bonsai.uno/foaf/bonsai#")
     BRDFDAT = Namespace("http://rdf.bonsai.uno/data/exiobase3_3_17/emission#")
     BRDFPROV = Namespace("http://rdf.bonsai.uno/prov/exiobase3_3_17#")
     CC = Namespace('http://creativecommons.org/ns#')
@@ -61,7 +61,7 @@ def setup_empty_graph():
     g.bind("brdffat", BRDFFAT)
     g.bind("brdfdat", BRDFDAT)
     g.bind("brdfprov", BRDFPROV)
-    g.bind("brdffoaf", BRDFFOAF)
+    g.bind("bfoaf", BRDFFOAF)
     g.bind("cc", CC)
     g.bind("dc", DC)
     g.bind("dtype", DTYPE)
@@ -77,19 +77,18 @@ def setup_empty_graph():
     return g
 
 
-def emissions(base_dir, sheetnum = 6):
+def emissions(base_dir, input_dir, sheetnum = 6):
     csvArr = []
     output_base_dir = Path(base_dir)
 
     xlsb = "MR_HSUT_2011_v3_3_17_extensions.xlsb"
-    if not os.path.exists(Path(data_dir, xlsb)):
-        print("Please add file {} to directory {}".format(xlsb, data_dir))
+    print(Path(input_dir, xlsb))
+    if not os.path.exists(Path(input_dir, xlsb)):
+        print("Please add file {} to directory {}".format(xlsb, input_dir))
         exit(0)
 
-    file_path = os.path.join(data_dir, xlsb)
-    file_handler = pkg_resources.resource_stream(__name__, file_path)
-
-    with open_xlsb(file_handler) as wb:
+    file_path = os.path.join(input_dir, xlsb)
+    with open_xlsb(file_path) as wb:
         # Read the sheet to array first and convert to pandas first for quick access
         with wb.get_sheet(sheetnum) as sheet:
             for row in sheet.rows(sparse=True):
@@ -100,7 +99,7 @@ def emissions(base_dir, sheetnum = 6):
 
     # Get emission codes from exiobase classifications
     extensions = "exiobase_classifications_v_3_3_17.xlsx"
-    if not os.path.exists(Path(data_dir, extensions)):
+    if not os.path.exists(Path("arborist/data", extensions)):
         print("Please add file {} to directory {}".format(extensions, data_dir))
         exit(0)
 
@@ -184,5 +183,5 @@ def emissions(base_dir, sheetnum = 6):
     write_graph(output_base_dir / "flow" / "exiobase3_3_17" / "emission", g)
 
 
-def generate_emissions(base_dir):
-    emissions(base_dir)
+def generate_emissions(base_dir, input_dir):
+    emissions(base_dir, input_dir)

@@ -1,6 +1,5 @@
 import os
 import json
-import pkg_resources
 from pathlib import Path
 
 __all__ = (
@@ -37,7 +36,7 @@ from .provenance_uris import generate_provenance_uris
 from .extract_emissions import generate_emissions
 
 
-def generate_all(base_dir):
+def generate_all(base_dir, input_dir):
     config_name = "config.json"
     config_path = Path(config_name)
     if not os.path.exists(config_path):
@@ -47,8 +46,9 @@ def generate_all(base_dir):
     with open(config_name) as json_file:
         options = json.load(json_file)
 
-        if options['extract_exiobase_emissions'] is True:
-            generate_emissions(base_dir)
+        if input_dir:
+            if options['extract_exiobase_emissions'] is True:
+                generate_emissions(base_dir, input_dir)
 
         if options["extract_climate_change"] is True:
             generate_climate_change_uris(base_dir)

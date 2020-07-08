@@ -14,6 +14,7 @@ def generate_provenance_uris(output_base_dir):
     prov = Namespace("http://www.w3.org/ns/prov#")
     purl = Namespace("http://purl.org/dc/dcmitype/")
     bfoaf = Namespace("http://rdf.bonsai.uno/foaf/exiobase3_3_17#")
+    bonsaifoaf = Namespace("http://rdf.bonsai.uno/foaf/bonsai#")
     bprov = Namespace("{}#".format(bprov_uri))
     dtype = Namespace("http://purl.org/dc/dcmitype/")
     vann = Namespace("http://purl.org/vocab/vann/")
@@ -28,6 +29,7 @@ def generate_provenance_uris(output_base_dir):
     g.bind("rdfs", RDFS)
     g.bind("prov", prov)
     g.bind("bfoaf", bfoaf)
+    g.bind("bonsaifoaf", bonsaifoaf)
     g.bind("bprov", bprov)
     g.bind("vann", vann)
 
@@ -35,13 +37,12 @@ def generate_provenance_uris(output_base_dir):
     node = URIRef(bprov_uri)
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     g.add((node, RDF.type, dtype.Dataset))
-    g.add((node, DC.contributor, Literal("BONSAI team")))
     g.add((node, DC.description, Literal("Provenance information about datasets and data extraction activities")))
     g.add((node, vann.preferredNamespaceUri, URIRef(bprov)))
-    g.add((node, DC.creator, bfoaf.bonsai))
+    g.add((node, DC.creator, bonsaifoaf.bonsai))
     g.add((node, DC.license, URIRef("https://creativecommons.org/licenses/by/3.0/")))
     g.add((node, DC.modified, Literal(today, datatype=XSD.date)))
-    g.add((node, DC.publisher, Literal("bonsai.uno")))
+    g.add((node, DC.publisher, bonsaifoaf.bonsai))
     g.add((node, DC.title, Literal("Provenance information")))
     g.add((node, OWL.versionInfo, Literal(__version__)))
 
@@ -80,7 +81,7 @@ def generate_provenance_uris(output_base_dir):
     g.add((arborist_uri, prov.used, URIRef("http://ontology.bonsai.uno/core")))
     g.add((arborist_uri, prov.used, bprov["exiobaseDataset_{}".format(exiobase_version)]))
     g.add((arborist_uri, prov.hadPlan, URIRef(bprov.extractionScript)))
-    g.add((arborist_uri, prov.wasAssociatedWith, URIRef(bfoaf.bonsai)))
+    g.add((arborist_uri, prov.wasAssociatedWith, URIRef(bonsaifoaf.bonsai)))
     g.add((arborist_uri, OWL.versionInfo, Literal(__version__)))
 
     plan = URIRef(bprov.extractionScript)
@@ -88,5 +89,18 @@ def generate_provenance_uris(output_base_dir):
     g.add((plan, RDF.type, prov.Entity))
     g.add((plan, RDFS.label, Literal("Entity representing the latest version of the Arborist Script")))
     g.add((plan, prov.hadPrimarySource, URIRef("https://github.com/BONSAMURAIS/arborist/tree/v{}".format(__version__.replace(".", "_")))))
+
+    # Provenance
+    g.add((node, RDF.type, prov.Collection))
+    g.add((node, prov.wasAttributedTo, bonsaifoaf.bonsai))
+    g.add((node, prov.wasGeneratedBy, bprov["dataExtractionActivity_{}".format(__version__.replace(".", "_"))]))
+    g.add((node, prov.generatedAtTime, Literal(today, datatype=XSD.date)))
+    g.add(
+        (
+            node,
+            URIRef("http://creativecommons.org/ns#license"),
+            URIRef("http://creativecommons.org/licenses/by/3.0/"),
+        )
+    )
 
     write_graph(Path(output_base_dir) / "prov" / "exiobase3_3_17", g)

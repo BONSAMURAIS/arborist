@@ -25,7 +25,7 @@ def generate_foaf_uris(output_base_dir):
     g.bind("dtype", dtype)
     g.bind("skos", SKOS)
     g.bind("foaf", FOAF)
-    g.bind("bonsaiprov", bfoaf_b)
+    g.bind("bonsaifoaf", bfoaf_b)
     g.bind("dc", DC)
     g.bind("bprov", bprov)
     g.bind("owl", OWL)
@@ -99,12 +99,12 @@ def generate_foaf_uris(output_base_dir):
     g.add((ec, FOAF.homepage, URIRef("https://www.exiobase.eu/")))
 
     # Provenance
-    b.add((node_b, prov.hadMember, node))
+    b.add((node_b, prov.hadMember, bonsai))
     g.add((node, prov.hadMember, ec))
 
     # Provenance
     b.add((node_b, RDF.type, prov.Collection))
-    b.add((node_b, prov.wasAttributedTo, bfoaf.bonsai))
+    b.add((node_b, prov.wasAttributedTo, bfoaf_b.bonsai))
     b.add((node_b, prov.wasGeneratedBy, bprov["dataExtractionActivity_{}".format(__version__.replace(".", "_"))]))
     b.add((node_b, prov.generatedAtTime, Literal(today, datatype=XSD.date)))
     b.add(
@@ -117,7 +117,7 @@ def generate_foaf_uris(output_base_dir):
 
     # Provenance
     g.add((node, RDF.type, prov.Collection))
-    g.add((node, prov.wasAttributedTo, bfoaf.bonsai))
+    g.add((node, prov.wasAttributedTo, bfoaf_b.bonsai))
     g.add((node, prov.wasGeneratedBy, bprov["dataExtractionActivity_{}".format(__version__.replace(".", "_"))]))
     g.add((node, prov.generatedAtTime, Literal(today, datatype=XSD.date)))
     g.add(
