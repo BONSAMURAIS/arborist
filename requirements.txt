@@ -2,3 +2,4 @@ docopt
 pandas
 rdflib
 xlrd
+pyxlsb
